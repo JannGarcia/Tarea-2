@@ -96,7 +96,7 @@
                 </option>
                 <option>
                     <name>OGChipSelectMenu</name>
-                    <state>MSP430F149	MSP430F149</state>
+                    <state>MSP430FR6989	MSP430FR6989</state>
                 </option>
                 <option>
                     <name>GStackHeapOverride</name>
@@ -104,11 +104,11 @@
                 </option>
                 <option>
                     <name>GStackSize2</name>
-                    <state>80</state>
+                    <state>160</state>
                 </option>
                 <option>
                     <name>GHeapSize2</name>
-                    <state>80</state>
+                    <state>160</state>
                 </option>
                 <option>
                     <name>RadioDataModelType</name>
@@ -223,7 +223,7 @@
                 </option>
                 <option>
                     <name>Math description</name>
-                    <state></state>
+                    <state>Default variants of cos, sin, tan, log, log10, pow, and exp.</state>
                 </option>
                 <option>
                     <name>GESupportFrwp</name>
@@ -757,7 +757,7 @@
                 </option>
                 <option>
                     <name>OutputFile</name>
-                    <state>templproj.d43</state>
+                    <state>Tarea2.d43</state>
                 </option>
                 <option>
                     <name>OutputFormat</name>
@@ -823,7 +823,7 @@
                 </option>
                 <option>
                     <name>XclFile</name>
-                    <state>$TOOLKIT_DIR$\CONFIG\lnk430F149.xcl</state>
+                    <state>$TOOLKIT_DIR$\config\linker\lnk430f149.xcl</state>
                 </option>
                 <option>
                     <name>XclFileSlave</name>
@@ -951,7 +951,7 @@
                 </option>
                 <option>
                     <name>ExtraOutputFile</name>
-                    <state>templproj.a43</state>
+                    <state>Tarea2.a43</state>
                 </option>
                 <option>
                     <name>ExtraOutputFormat</name>

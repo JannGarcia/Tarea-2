@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.5\common\bin\cspybat" -f "H:\My Drive\College Semesters\4th Year, Semester 1\CIIC4082\Homeworks\Tarea 2\IAR Workspace\settings\Tarea2.Debug.general.xcl" --backend -f "H:\My Drive\College Semesters\4th Year, Semester 1\CIIC4082\Homeworks\Tarea 2\IAR Workspace\settings\Tarea2.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.5\common\bin\cspybat" -f "D:\Code Workspaces\IAR Workspaces\Tarea 2\settings\Tarea2.Debug.general.xcl" --backend -f "D:\Code Workspaces\IAR Workspaces\Tarea 2\settings\Tarea2.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.5\common\bin\cspybat" -f "H:\My Drive\College Semesters\4th Year, Semester 1\CIIC4082\Homeworks\Tarea 2\IAR Workspace\settings\Tarea2.Debug.general.xcl" "--debug_file=%~1" --backend -f "H:\My Drive\College Semesters\4th Year, Semester 1\CIIC4082\Homeworks\Tarea 2\IAR Workspace\settings\Tarea2.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.5\common\bin\cspybat" -f "D:\Code Workspaces\IAR Workspaces\Tarea 2\settings\Tarea2.Debug.general.xcl" "--debug_file=%~1" --backend -f "D:\Code Workspaces\IAR Workspaces\Tarea 2\settings\Tarea2.Debug.driver.xcl" 
 
 @echo off 
 :end
