@@ -13,6 +13,18 @@
         ORG     0x1C00                  ; RAM starting location
                                         ; Always define it when working with arrays
                                         ; or saving a variable to RAM directly
+
+;============================= TODOS ===========================================
+; 1) Setup buttons
+;       * Values need to be cleared and stuff.
+;       * Handle in "reset"?
+
+; 2) Where do we handle button inputs?
+;       * The professor said that subroutines should do one thing each
+;         so having button checks inside of a menu routine sounds cursed.
+                                        
+                                        
+; 3) Add all letters/digits as arrays (separating by high/low)
                                         
 
 ;============================= ARRAY DEFINITIONS/SETUP =========================
@@ -96,6 +108,9 @@ startProgram:
 ; Call the respective page's subroutine. 
 ; NOTE: The subroutine should eventually increase R4 to allow
 displayCurrentPage:
+
+        ; TODO: Check for button presses here?
+
         CMP     #0, R4
         CALL    #displayTitleScreen     ; Maybe we need to use CALL instead of JMP.
                                         ; Same goes for below.
@@ -111,9 +126,7 @@ displayCurrentPage:
 
 
 displayTitleScreen:
-        ; TODO: Loop until S1 or S2 is pressed.
-          ; If S1 is pressed -- R4 = 1
-          ; If S2 is pressed -- R4 = 2
+
 
         ; TODO:
           ; Maybe label what these moves do?
