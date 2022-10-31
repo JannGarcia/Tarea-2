@@ -114,17 +114,14 @@ displayCurrentPage:
         ; TODO: Check for button presses here?
 
         CMP     #0, R4
-        CALL    #displayTitleScreen     ; Maybe we need to use CALL instead of JMP.
+        JEQ     #displayTitleScreen     ; Maybe we need to use CALL instead of JMP.
                                         ; Same goes for below.
         
         CMP     #1, R4
-        CALL    #displayNames
+        JEQ     #displayNames
         
         CMP     #2, R4
-        CALL    #displayMenu
-
-        RET                             ; Return back to "startProgram"
-        
+        JEQ     #displayMenu                         
 
 
 displayTitleScreen:
@@ -140,7 +137,7 @@ displayTitleScreen:
         MOV.b   #0x02, &0xA33
         MOV.b   #0x88, &0xA2F
         
-        RET
+        RET                             ; Return back to "startProgram"
 
 
 displayNames:
@@ -156,27 +153,26 @@ displayNames:
         CMP     #3, R5
         JEQ     displayName4
         
-        RET
         
 displayName1:
         ; TODO: display Name 1
-        RET                             ; Jump back to "displayCurrentPage"
+        RET                             ; Return back to "startProgram"
         
 displayName2:
         ; TODO: display Name 2
-        RET                             ; Jump back to "displayCurrentPage"
+        RET                             ; Return back to "startProgram"
 
 displayName3:
         ; TODO: display Name 3
-        RET                             ; Jump back to "displayCurrentPage"
+        RET                             ; Return back to "startProgram"
         
 displayName4:
         ; TODO: display Name 4
-        RET                             ; Jump back to "displayCurrentPage"
+        RET                             ; Return back to "startProgram"
         
         
 displayMenu:
-        RET                             ; Jump back to "displayCurrentPage"
+        RET                             ; Return back to "startProgram"
 
 
 
