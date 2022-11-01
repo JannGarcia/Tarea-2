@@ -6,22 +6,37 @@
         <name>Debug</name>
         <outputs>
             <file>$PROJ_DIR$\Debug\Obj\asm.r43</file>
-            <file>$PROJ_DIR$\asm.s43</file>
+            <file>$TOOLKIT_DIR$\config\linker\lnk430fr6989.xcl</file>
             <file>$PROJ_DIR$\Debug\Exe\Tarea2.d43</file>
-            <file>$TOOLKIT_DIR$\inc\msp430.h</file>
             <file>$PROJ_DIR$\Debug\List\Tarea2.map</file>
             <file>$TOOLKIT_DIR$\inc\msp430fr6989.h</file>
+            <file>$PROJ_DIR$\asm.s43</file>
             <file>$TOOLKIT_DIR$\config\linker\multiplier32.xcl</file>
-            <file>$TOOLKIT_DIR$\config\linker\lnk430fr6989.xcl</file>
+            <file>$TOOLKIT_DIR$\inc\msp430.h</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 2 4</file>
+                    <file> 2 3</file>
                 </tool>
             </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\Tarea2.d43</name>
+            <outputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 3</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 1 6 0</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\asm.s43</name>
@@ -34,22 +49,7 @@
             <inputs>
                 <tool>
                     <name>A430</name>
-                    <file> 3 5</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\Tarea2.d43</name>
-            <outputs>
-                <tool>
-                    <name>XLINK</name>
-                    <file> 4</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>XLINK</name>
-                    <file> 7 6 0</file>
+                    <file> 7 4</file>
                 </tool>
             </inputs>
         </file>
