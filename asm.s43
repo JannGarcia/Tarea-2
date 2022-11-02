@@ -194,19 +194,62 @@ displayNames:
         
         
 displayName1:
-        ; TODO: display Name 1
+        MOV.B   #0xCF, &0xA29           ;R high byte
+        MOV.B   #0x02, &0xA2A           ;R low byte
+        MOV.B   #0x90, &0xA25           ;I high byte
+        MOV.B   #0x50, &0xA26           ;I low byte
+        MOV.B   #0x9C, &0xA23           ;C high byte
+        MOV.B   #0x00, &0xA24           ;C low byte
+        MOV.B   #0xEF, &0xA32           ;A high byte
+        MOV.B   #0x00, &0xA33           ;A low byte
+        MOV.B   #0xCF, &0xA2E           ;R high byte
+        MOV.B   #0x02, &0xA2F           ;R low byte
+        MOV.B   #0xF0, &0xA27           ;D high byte
+        MOV.B   #0x50, &0xA28           ;D low byte
         RET                             ; Return back to "startProgram"
         
 displayName2:
-        ; TODO: display Name 2
+        MOV.B #0x78 , &0xA29            ;J high byte
+        MOV.B #0x00 , &0xA2A            ;J low byte
+        MOV.B #0xEF , &0xA25            ;A high byte
+        MOV.B #0x00 , &0xA26            ;A low byte
+        MOV.B #0x6C , &0xA23            ;N high byte
+        MOV.B #0x82 , &0xA24            ;N low byte
+        MOV.B #0x6C , &0xA32            ;N high byte
+        MOV.B #0x82 , &0xA33            ;N low byte
+        MOV.B #0x00 , &0xA2E            ;empty
+        MOV.B #0x00 , &0xA2F            ;empty
+        MOV.B #0x00 , &0xA27            ;empty
+        MOV.B #0x00 , &0xA28            ;empty
         RET                             ; Return back to "startProgram"
 
 displayName3:
-        ; TODO: display Name 3
+        MOV.B   #0x90, &0xA29           ;I high byte
+        MOV.B   #0x50, &0xA2A           ;I low byte
+        MOV.B   #0xB1, &0xA25           ;S high byte
+        MOV.B   #0x80, &0xA26           ;S low byte
+        MOV.B   #0xEF, &0xA23           ;A high byte
+        MOV.B   #0x00, &0xA24           ;A low byte
+        MOV.B   #0xF1, &0xA32           ;B high byte
+        MOV.B   #0x50, &0xA33           ;B low byte
+        MOV.B   #0x9F, &0xA2E           ;E high byte
+        MOV.B   #0x00 , &0xA2F          ;E low byte
+        MOV.B   #0x1C, &0xA27           ;L high byte
+        MOV.B   #0x00 , &0xA28          ;L low byte
         RET                             ; Return back to "startProgram"
         
 displayName4:
-        ; TODO: display Name 4
+        MOV.B   #0x0C, &0xA29           ;V high byte
+        MOV.B   #0x28, &0xA2A           ;V low byte
+        MOV.B   #0xEF, &0xA25           ;A high byte
+        MOV.B   #0x00, &0xA26           ;A low byte
+        MOV.B   #0x6c, &0xA23           ;N high byte
+        MOV.B   #0x82, &0xA24           ;N low byte
+        MOV.B   #0xF0, &0xA32           ;D high byte
+        MOV.B   #0x50, &0xA33           ;D low byte
+        MOV.B   #0x90, &0xA2E           ;I high byte
+        MOV.B   #0x50, &0xA2F           ;I high byte
+        MOV.B   #0x9F, &0xA27           ;E
         RET                             ; Return back to "startProgram"
         
         
