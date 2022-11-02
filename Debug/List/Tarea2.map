@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.6.2.104                                         #
 #                                                                              #
-#           Link time     =  02/Nov/2022  09:38:56                             #
+#           Link time     =  02/Nov/2022  10:25:31                             #
 #           Target CPU    =  MSP430                                            #
 #           List file     =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
 #                            List\Tarea2.map"                                  #
@@ -11,7 +11,7 @@
 #                            Format: ubrof10                                   #
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
-#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW8E47.tmp   #
+#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW357B.tmp   #
 #                            ("D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug #
 #                            \Obj\asm.r43"                                     #
 #                            -o                                                #
@@ -132,7 +132,7 @@ CSTACK
   Segment part 0. ROOT 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 4400 - 6337 (0x1f38 bytes), align: 1
+  Relative segment, address: 4400 - 634B (0x1f4c bytes), align: 1
   Segment part 1. ROOT        Intra module refs:   Absolute parts
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -150,68 +150,74 @@ CSTACK
            setupDisplayAndPorts    602C 
            mainLoop                6076 
            reset                   6084 
-           startProgram            6092 
-           endProgram              6334 
-           checkButtonInput        60A2 
-           displayCurrentPage      61D2 
-           checkS2                 60C0 
-           delay                   6322 
+           startProgram            6096 
+           endProgram              6348 
+           checkButtonInput        60A6 
+           displayCurrentPage      61C6 
+           checkS2                 60C4 
+           delay                   6336 
            jumpToPerformActionForS1
-                                   60DE 
-           endButtonCheck          60E8 
+                                   60E2 
+           endButtonCheck          60EC 
            jumpToPerformActionForS2
-                                   60E4 
-           performActionForS1      60FC 
-           performActionForS2      6168 
-           turnOffLEDs             60F0 
+                                   60E8 
+           performActionForS1      60EE 
+           performActionForS2      615C 
            performS1ActionForPage0
-                                   6132 
+                                   6124 
            performS1ActionForPage1
-                                   6136 
+                                   6128 
            performS1ActionForPage2
-                                   6140 
+                                   6132 
            performS1ActionForPage3
-                                   6144 
+                                   6136 
            performS1ActionForPage4
-                                   6148 
+                                   613A 
            performS1ActionForPage5
-                                   614C 
+                                   613E 
            performS1ActionForPage6
-                                   615A 
+                                   614C 
            performS1ActionForPage7
-                                   615C 
+                                   6150 
            performS1ActionForPage8
-                                   6162 
-           endS1Page1Action        613E 
-           endS1Page5Action        6158 
+                                   6156 
+           endS1Page1Action        6130 
+           endS1Page5Action        614A 
            performS2ActionForPage0
-                                   619E 
+                                   6192 
            performS2ActionForPage1
-                                   61A2 
+                                   6196 
            performS2ActionForPage2
-                                   61A6 
+                                   619A 
            performS2ActionForPage3
-                                   61AC 
+                                   61A0 
            performS2ActionForPage4
-                                   61B6 
+                                   61AA 
            performS2ActionForPage5
-                                   61BC 
+                                   61B0 
            performS2ActionForPage6
-                                   61C2 
+                                   61B6 
            performS2ActionForPage7
-                                   61C4 
+                                   61BA 
            performS2ActionForPage8
-                                   61CA 
-           endS2Page3Action        61B4 
-           displayTitleScreen      61E0 
-           displayNames            6208 
-           displaySignedQuestion   6320 
-           displayName1            621A 
-           displayName2            625C 
-           displayName3            629A 
-           displayName4            62DE 
-           delayStart              632C 
-           next                    632E 
+                                   61C0 
+           endS2Page3Action        61A8 
+           displayTitleScreen      61F4 
+           displayNames            621C 
+           displaySignedQuestion   6334 
+           displayDecToBinQuestion
+                                   6334 
+           displayDigitsQuestion   6334 
+           displayBitsQuestion     6334 
+           displayNumberInput      6334 
+           displayError            6334 
+           displayConversion       6334 
+           displayName1            622E 
+           displayName2            6270 
+           displayName3            62AE 
+           displayName4            62F2 
+           delayStart              6340 
+           next                    6342 
 
 
 
@@ -226,7 +232,7 @@ CSTACK
 SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
 =======              =====    =============   ===========     ====  ====  =====
 CSTACK                                 2360 - 23FF              A0   rel    1
-<CODE> 1                               4400 - 6337            1F38   rel    1
+<CODE> 1                               4400 - 634B            1F4C   rel    1
                                        FFFE - FFFF               2  aseg  
 
                 ****************************************
@@ -235,7 +241,7 @@ CSTACK                                 2360 - 23FF              A0   rel    1
                 *                                      *
                 ****************************************
 
- 7 992 bytes of CODE memory (+ 2 absolute )
+ 8 012 bytes of CODE memory (+ 2 absolute )
    160 bytes of DATA memory
 
 Errors: none

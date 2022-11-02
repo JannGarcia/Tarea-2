@@ -22,7 +22,8 @@
 ; 1) Setup buttons
 ;       * Values need to be cleared and stuff.
 ;       * Handle in "reset"?
-                                        
+                                   
+; 2) State 6 Button Handling
                                         
 ; 3) Add all letters/digits as arrays (separating by high/low)
 
@@ -125,9 +126,11 @@ reset:
 
         MOV     #0, R9                  ; R9 = P1 Value (S1 = Bit 1, S2 = Bit 2)
 
+        MOV     #2, &LCDCMEMCTL         ; clear LCD memory (resets screen)
+
         RET
         
-;================================== RESET SUBROUTINE ===========================
+;================================== RESET SUBROUTINE END =======================
         
 startProgram:
         
@@ -201,17 +204,17 @@ jumpToPerformActionForS2:
         CALL    #performActionForS2
         
 endButtonCheck:
-        // DEBUG: Turn LEDs OFF
-        CMP.b   #0x6, R9
-        JEQ     turnOffLEDs
-        RET                             ; Return back to "startProgram"
+//        // DEBUG: Turn LEDs OFF
+//        CMP.b   #0x6, R9
+//        JEQ     turnOffLEDs
+//        RET                             ; Return back to "startProgram"
 
-turnOffLEDs:
-        BIC.b   #BIT0, &P1OUT
-        BIC.b   #0x80, &P9OUT
+//turnOffLEDs:
+//        BIC.b   #BIT0, &P1OUT
+//        BIC.b   #0x80, &P9OUT
         RET                             ; Return back to "startProgram"
         
-;=========================== CHECK BUTTON SUBROUTINE ===========================
+;=========================== CHECK BUTTON SUBROUTINE END========================
 
 
 ;=============================== S1 BUTTON ACTION ==============================
@@ -220,6 +223,7 @@ performActionForS1:
         // DEBUG: Turn P1.0 ON and P9.7 OFF
         BIS.b   #BIT0, &P1OUT
         BIC.b   #0x80, &P9OUT
+;        CALL    #delay                  // Show the LED
         
         CMP     #0, R4
         JEQ     performS1ActionForPage0
@@ -293,6 +297,8 @@ endS1Page5Action:
         RET
         
 performS1ActionForPage6:        ; Number Choosing
+        ; TEMP: Skip to Page 8
+        MOV     #8, R4
         RET                             ; TODO
 
 performS1ActionForPage7:        ; Error
@@ -305,7 +311,7 @@ performS1ActionForPage8:        ; Conversion State
         MOV     #9, R4                  ; This will cause the program to loop "mainLoop"
         RET
 
-;=============================== S1 BUTTON ACTION ==============================
+;=============================== S1 BUTTON ACTION END===========================
 
 ;=============================== S2 BUTTON ACTION ==============================
 
@@ -313,6 +319,7 @@ performActionForS2:
         // DEBUG: Turn P1.0 OFF and P9.7 ON
         BIC.b   #BIT0, &P1OUT
         BIS.b   #0x80, &P9OUT
+;        CALL    #delay                  // Show the LED
         
         CMP     #0, R4
         JEQ     performS2ActionForPage0
@@ -375,6 +382,8 @@ performS2ActionForPage5:        ; Bits?
         MOV     #6, R4
         RET
 performS2ActionForPage6:        ; Number Choosing
+        ; TEMP: Move to Page 8
+        MOV     #8, R4
         ; TODO
         RET
 performS2ActionForPage7:        ; Error
@@ -386,46 +395,14 @@ performS2ActionForPage8:        ; Conversion
         MOV     #9, R4                  ; This will cause the program to loop "mainLoop"
         RET
         
-        
-        ; We need to check what page we are on!
-        ; Depending on the page, we need to perform different actions:
-        ;       R4 = 0: Title
-        ;       * R4 = 2
 
-        ;       R4 = 1: Name Loop
-        ;       * R4 = 2
-
-        ;       R4 = 2: Menu -- Question 1 (Sign?)
-        ;       * R4 = 3
-
-        ;       R4 = 3: Menu -- Question 2 (Dec -> Bin?)
-        ;       * If R6 == 0            -- R4 = 4
-        ;       * Else                  -- R4 = 5
-
-        ;       R4 = 4: Menu -- Question 3.a (Integer Bits - Dec)
-        ;       * R4 = 6
-
-        ;       R4 = 5: Menu -- Question 3.b (Integer Bits - Bin)
-        ;       * R4 = 6
-
-        ;       R4 = 6: Input Number Screen
-        ;       * If number >= 64       -- R4 = 7
-        ;       * Else                  -- R4 = 8
-
-        ;       R4 = 7: Error
-        ;       * R4 = 6
-
-        ;       R4 = 8: Conversion State
-        ;       * R4 = 9                // This will cause the program to loop "mainLoop"
-        RET                              ; Jump back to "checkButtonInput"
-
-;=============================== S2 BUTTON ACTION ==============================
+;=============================== S2 BUTTON ACTION END===========================
         
 
 ;=========================== DISPLAY SUBROUTINE ================================
 
 displayCurrentPage:
-        CMP     #0, R4
+        CMP     #0, R4                  
         JEQ     displayTitleScreen      ; Maybe we need to use CALL instead of JMP.
                                         ; Same goes for below.
         
@@ -435,6 +412,23 @@ displayCurrentPage:
         CMP     #2, R4
         JEQ     displaySignedQuestion
         
+        CMP     #3, R4
+        JEQ     displayDecToBinQuestion
+        
+        CMP     #4, R4
+        JEQ     displayDigitsQuestion
+        
+        CMP     #5, R4
+        JEQ     displayBitsQuestion
+        
+        CMP     #6, R4
+        JEQ     displayNumberInput
+        
+        CMP     #7, R4
+        JEQ     displayError
+        
+        CMP     #8, R4
+        JEQ     displayConversion        
         ; ...
         
         ; CMP     #2, R4
@@ -539,6 +533,12 @@ displayName4:
 ;         RET                             ; Return back to "startProgram"
 
 displaySignedQuestion:
+displayDecToBinQuestion:
+displayDigitsQuestion:
+displayBitsQuestion:
+displayNumberInput:
+displayError:
+displayConversion:
           RET
 
 ;=========================== DISPLAY SUBROUTINE ================================
