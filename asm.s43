@@ -161,9 +161,13 @@ checkButtonInput:
         ; Check once again. If it's true, it should be correct
         MOV.b   &P1IN, R9               ; Get button state from P1 
         AND.b   #00000110B, R9          ; Apply bit mask to value
-        CMP.b   #00000100B, R9          ; Check if S1 was pressed (sets to 0 when pressed)
 
-        JEQ     performActionForS1
+        ; Check if S1 was unpressed (sets to 0 when pressed)
+        ; This is to prevent holding the button
+        CMP.b   #00000100B, R9          
+
+        JNE     jumpToPerformActionForS1
+        JMP     endButtonCheck
         
 checkS2:           
         ; Check if S2 was pressed
@@ -182,60 +186,206 @@ checkS2:
         ; Check once again. If it's true, it should be correct
         MOV.b   &P1IN, R9               ; Get button state from P1 
         AND.b   #00000110B, R9          ; Apply bit mask to value
-        CMP.b   #00000010B, R9          ; Check if S1 was pressed (sets to 0 when pressed)
 
-        JEQ     performActionForS2
+        ; Check if S2 was unpressed (sets to 0 when pressed)
+        ; This is to prevent holding the button
+        CMP.b   #00000010B, R9         
+        JNE     jumpToPerformActionForS2
+        JMP     endButtonCheck
+                
+jumpToPerformActionForS1:
+        CALL    #performActionForS1
+        JMP     endButtonCheck
+        
+jumpToPerformActionForS2:
+        CALL    #performActionForS2
         
 endButtonCheck:
         // DEBUG: Turn LEDs OFF
         CMP.b   #0x6, R9
-        JNE     stop
+        JEQ     turnOffLEDs
+        RET                             ; Return back to "startProgram"
+
+turnOffLEDs:
         BIC.b   #BIT0, &P1OUT
         BIC.b   #0x80, &P9OUT
+        RET                             ; Return back to "startProgram"
         
-stop:   ; lol the prof said not to do this
+;=========================== CHECK BUTTON SUBROUTINE ===========================
 
-        RET                             ; No button was pressed. Return back to "startProgram"
 
+;=============================== S1 BUTTON ACTION ==============================
 
 performActionForS1:
         // DEBUG: Turn P1.0 ON and P9.7 OFF
         BIS.b   #BIT0, &P1OUT
         BIC.b   #0x80, &P9OUT
         
-        ; We need to check what page we are on!
-        ; Depending on the page, we need to perform different actions:
-        ;       R4 = 0: Title
-        ;       * R4 = 1
-
-        ;       R4 = 1: Name Loop
-        ;       * R5++ % 4
-
-        ;       R4 = 2: Menu -- Question 1 (Sign?)
-        ;       * Toggle R6
-
-        ;       R4 = 3: Menu -- Question 2 (Dec -> Bin?)
-        ;       * Toggle R7
-
-        ;       R4 = 4: Menu -- Question 3.a (Integer Bits - Dec)
-        ;       * Toggle R8
-
-        ;       R4 = 5: Menu -- Question 3.b (Integer Bits - Bin)
-        ;       * R8++ % 7
-
-        ;       R4 = 6: Input Number Screen
-
-        ;       R4 = 7: Error
-        ;       * R4 = 6
-
-        ;       R4 = 8: Conversion State
-        ;       * R4 = 9                // This will cause the program to loop "mainLoop"
-        JMP     endButtonCheck         ; Jump back to "startProgram"
+        CMP     #0, R4
+        JEQ     performS1ActionForPage0
         
+        CMP     #1, R4
+        JEQ     performS1ActionForPage1
+        
+        CMP     #2, R4
+        JEQ     performS1ActionForPage2
+        
+        CMP     #3, R4
+        JEQ     performS1ActionForPage3
+        
+        CMP     #4, R4
+        JEQ     performS1ActionForPage4
+        
+        CMP     #5, R4
+        JEQ     performS1ActionForPage5
+        
+        CMP     #6, R4
+        JEQ     performS1ActionForPage6
+        
+        CMP     #7, R4
+        JEQ     performS1ActionForPage7
+        
+        CMP     #8, R4
+        JEQ     performS1ActionForPage8
+        
+; We need to check what page we are on!
+; Depending on the page, we need to perform different actions:
+        
+performS1ActionForPage0:        ; Title
+        ; R4 = 1
+        MOV     #1, R4
+        RET
+        
+        
+performS1ActionForPage1:        ; Name Loop
+        ; R5++ % 4
+        INC     R5
+        CMP     #4, R5
+        JL      endS1Page1Action
+        MOV     #0, R5                  ; Reset R5
+        
+endS1Page1Action:
+        RET
+        
+performS1ActionForPage2:        ; Signed or Unsigned?
+        ; Toggle R6
+        XOR     #BIT0, R6
+        RET
+        
+performS1ActionForPage3:        ; Dec --> Bin?
+        ; Toggle R7
+        XOR     #BIT0, R7
+        RET
+        
+performS1ActionForPage4:        ; Digs?
+        ; Toggle R8
+        XOR     #BIT0, R8
+        RET
+        
+performS1ActionForPage5:        ; Bits?
+        ; R8++ % 7
+        INC     8
+        CMP     #7, R8
+        JL      endS1Page5Action
+        MOV     #0, R8                  ; Reset R8
+        
+endS1Page5Action:
+        RET
+        
+performS1ActionForPage6:        ; Number Choosing
+        RET                             ; TODO
+
+performS1ActionForPage7:        ; Error
+        ; R4 = 6
+        MOV     #6, R4
+        RET
+        
+performS1ActionForPage8:        ; Conversion State
+        ; R4 = 9
+        MOV     #9, R4                  ; This will cause the program to loop "mainLoop"
+        RET
+
+;=============================== S1 BUTTON ACTION ==============================
+
+;=============================== S2 BUTTON ACTION ==============================
+
 performActionForS2:
         // DEBUG: Turn P1.0 OFF and P9.7 ON
         BIC.b   #BIT0, &P1OUT
         BIS.b   #0x80, &P9OUT
+        
+        CMP     #0, R4
+        JEQ     performS2ActionForPage0
+        
+        CMP     #1, R4
+        JEQ     performS2ActionForPage1
+        
+        CMP     #2, R4
+        JEQ     performS2ActionForPage2
+        
+        CMP     #3, R4
+        JEQ     performS2ActionForPage3
+        
+        CMP     #4, R4
+        JEQ     performS2ActionForPage4
+        
+        CMP     #5, R4
+        JEQ     performS2ActionForPage5
+        
+        CMP     #6, R4
+        JEQ     performS2ActionForPage6
+        
+        CMP     #7, R4
+        JEQ     performS2ActionForPage7
+        
+        CMP     #8, R4
+        JEQ     performS2ActionForPage8
+        
+; We need to check what page we are on!
+; Depending on the page, we need to perform different actions:
+                
+performS2ActionForPage0:        ; Title
+        ; R4 = 2
+        MOV     #2, R4
+        RET
+performS2ActionForPage1:        ; Name Loop
+        ; R4 = 2
+        MOV     #2, R4
+        RET
+performS2ActionForPage2:        ; Sign?
+        ; R4 = 3
+        MOV     #3, R4
+        RET
+performS2ActionForPage3:        ; Dec --> Bin?
+        ; R4 = 4 if R6 =0, else R4 = 5
+        MOV     #4, R4
+        CMP     #0, R6
+        JEQ     endS2Page3Action
+        INC.b   R4
+
+endS2Page3Action:
+        RET
+        
+performS2ActionForPage4:        ; Digs?
+        ; R4 = 6
+        MOV     #6, R4
+        RET
+performS2ActionForPage5:        ; Bits?
+        ; R4 = 6
+        MOV     #6, R4
+        RET
+performS2ActionForPage6:        ; Number Choosing
+        ; TODO
+        RET
+performS2ActionForPage7:        ; Error
+        ; R4 = 6
+        MOV     #6, R4
+        RET    
+performS2ActionForPage8:        ; Conversion
+        ; R4 = 9
+        MOV     #9, R4                  ; This will cause the program to loop "mainLoop"
+        RET
+        
         
         ; We need to check what page we are on!
         ; Depending on the page, we need to perform different actions:
@@ -267,10 +417,9 @@ performActionForS2:
 
         ;       R4 = 8: Conversion State
         ;       * R4 = 9                // This will cause the program to loop "mainLoop"
-        JMP     endButtonCheck         ; Jump back to "startProgram"
-        
-;=========================== CHECK BUTTON SUBROUTINE ===========================
+        RET                              ; Jump back to "checkButtonInput"
 
+;=============================== S2 BUTTON ACTION ==============================
         
 
 ;=========================== DISPLAY SUBROUTINE ================================
