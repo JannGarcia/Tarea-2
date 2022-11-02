@@ -14,14 +14,14 @@
                                         ; Always define it when working with arrays
                                         ; or saving a variable to RAM directly
 
-;============================= TODOs ==========================================
+;============================= NOTES ===========================================
+; * Everything commented with // is debug code.
+;===============================================================================
+
+;============================= TODOs ===========================================
 ; 1) Setup buttons
 ;       * Values need to be cleared and stuff.
 ;       * Handle in "reset"?
-
-; 2) Where do we handle button inputs?
-;       * The professor said that subroutines should do one thing each
-;         so having button checks inside of a menu routine sounds cursed.
                                         
                                         
 ; 3) Add all letters/digits as arrays (separating by high/low)
@@ -62,10 +62,17 @@ UnlockGPIO:                             ; Disable de GPIO power-on default
 
 setupDisplayAndPorts:
         ; Manage Ports 
-        BIS.b   #11111001B, &P1DIR        ; set P1.1/2 to input (input = 0)
+        ; Port 1
+        MOV.b   #11111001B, &P1DIR        ; set P1.1/2 to input (input = 0)
         MOV.b   #00000110B, &P1REN        ; Activate P1.1/2 pull-up/down resistors
-        BIS.b   #11111001B, &P1OUT        ; set P1.1/2 pull down resistor
+        BIS.b   #00000110B, &P1OUT        ; set P1.1/2 pull down resistor
         BIC.b   #BIT0,&P1OUT              ; set P1.0 LED off 
+
+
+        // Port 9 (DEBUG -- Only for LED)
+        BIS.b   #0xFF,&P9DIR              ; Set all P9 pins for output
+        BIC.b   #0x80,&P9OUT              ; set P9.7 LED off
+
 
         ; Enable LCD segments: 0-21, 26-43
         MOV     #0xFFFF, &LCDCPCTL0     ; 1111111111111111
@@ -90,59 +97,185 @@ mainLoop:
         CALL    #endProgram             ; Never runs, as mainLoop goes on forever
 
 
+;================================== RESET SUBROUTINE ===========================
 ; Perform "Housekeeping" -- where we set every register/value to a default val
 reset:
         MOV     #0, R4                  ; R4 = Current Page/State
                                         ;       0 = Title       <-- start
                                         ;       1 = Name Loop
-                                        ;       2 = Menu -- Question 1
-                                                3 = Menu -- Question 2
+                                        ;       2 = Menu -- Question 1 (Sign?)
+                                        ;       3 = Menu -- Question 2 (D --> B)
+                                        ;       4 = Menu -- Question 3.a (Digs?)
+                                        ;       5 = Menu -- Question 3.b (Bits?)
+                                        ;       6 = Input Number Screen
+                                        ;       7 = Error
+                                        ;       8 = Conversion State
                                                 
                                         ;       ...
 
-        MOV     #0, R5                  ; R5 = Current Substate
-                                        ;       R4 = 1
+        MOV     #0, R5                  ; R5 = Current Name
                                         ;       * 0 = Name 1
                                         ;       * 1 = Name 2
                                         ;       * 2 = Name 3
                                         ;       * 3 = Name 4
 
-        MOV     #0, R7                  ; R7 = Delay Register
+        MOV     #0, R6                  ; R6 = Signed/Unsigned boolean
+        MOV     #0, R7                  ; R7 = Dec -> Bin boolean / delay register
+        MOV     #0, R8                  ; R8 = # of integer bits [0-6 binary, 1-2 decimal]
+
+        MOV     #0, R9                  ; R9 = P1 Value (S1 = Bit 1, S2 = Bit 2)
 
         RET
         
+;================================== RESET SUBROUTINE ===========================
         
 startProgram:
         
-        ; Here we would CALL #checkButtonInput
-
-
+        CALL    #checkButtonInput
         CALL    #displayCurrentPage
         
         
         ; Temporary check to determine if we need to continue looping
         ; see TODO's #4
-        CMP     #3, R4
-        JL     startProgram
+        CMP     #9, R4
+        JL      startProgram
         
         RET                             ; Jump back to "main"
 
 
+;=========================== CHECK BUTTON SUBROUTINE ===========================
 checkButtonInput:
         ; Check if S1 was pressed
         ; If S1 was pressed, do an action based on the current page
 
-        ; Same for S2
+        MOV.b   &P1IN, R9               ; Get button state from P1 
+        AND.b   #00000110B, R9          ; Apply bit mask to value
+        CMP.b   #00000100B, R9          ; Check if S1 was pressed (sets to 0 when pressed)
+        
+        ; Skip to checking S2
+        JNE     checkS2                 ; S1 wasn't pressed, check S2
+        
+        ; Call a delay, in case it was a false alarm
+        CALL    #delay
+        
+        ; Check once again. If it's true, it should be correct
+        MOV.b   &P1IN, R9               ; Get button state from P1 
+        AND.b   #00000110B, R9          ; Apply bit mask to value
+        CMP.b   #00000100B, R9          ; Check if S1 was pressed (sets to 0 when pressed)
 
-        RET                             ; Jump back to "startProgram"
+        JEQ     performActionForS1
+        
+checkS2:           
+        ; Check if S2 was pressed
+        ; If S2 was pressed, do an action based on the current page
+
+        MOV.b   &P1IN, R9               ; Get button state from P1 
+        AND.b   #00000110B, R9          ; Apply bit mask to value
+        CMP.b   #00000010B, R9          ; Check if S2 was pressed (sets to 0 when pressed)
+        
+        JNE     endButtonCheck          ; S2 wasn't pressed, end button check
+        
+        ; Call a delay, in case it was a false alarm
+        CALL    #delay
+        
+        
+        ; Check once again. If it's true, it should be correct
+        MOV.b   &P1IN, R9               ; Get button state from P1 
+        AND.b   #00000110B, R9          ; Apply bit mask to value
+        CMP.b   #00000010B, R9          ; Check if S1 was pressed (sets to 0 when pressed)
+
+        JEQ     performActionForS2
+        
+endButtonCheck:
+        // DEBUG: Turn LEDs OFF
+        CMP.b   #0x6, R9
+        JNE     stop
+        BIC.b   #BIT0, &P1OUT
+        BIC.b   #0x80, &P9OUT
+        
+stop:   ; lol the prof said not to do this
+
+        RET                             ; No button was pressed. Return back to "startProgram"
+
+
+performActionForS1:
+        // DEBUG: Turn P1.0 ON and P9.7 OFF
+        BIS.b   #BIT0, &P1OUT
+        BIC.b   #0x80, &P9OUT
+        
+        ; We need to check what page we are on!
+        ; Depending on the page, we need to perform different actions:
+        ;       R4 = 0: Title
+        ;       * R4 = 1
+
+        ;       R4 = 1: Name Loop
+        ;       * R5++ % 4
+
+        ;       R4 = 2: Menu -- Question 1 (Sign?)
+        ;       * Toggle R6
+
+        ;       R4 = 3: Menu -- Question 2 (Dec -> Bin?)
+        ;       * Toggle R7
+
+        ;       R4 = 4: Menu -- Question 3.a (Integer Bits - Dec)
+        ;       * Toggle R8
+
+        ;       R4 = 5: Menu -- Question 3.b (Integer Bits - Bin)
+        ;       * R8++ % 7
+
+        ;       R4 = 6: Input Number Screen
+
+        ;       R4 = 7: Error
+        ;       * R4 = 6
+
+        ;       R4 = 8: Conversion State
+        ;       * R4 = 9                // This will cause the program to loop "mainLoop"
+        JMP     endButtonCheck         ; Jump back to "startProgram"
+        
+performActionForS2:
+        // DEBUG: Turn P1.0 OFF and P9.7 ON
+        BIC.b   #BIT0, &P1OUT
+        BIS.b   #0x80, &P9OUT
+        
+        ; We need to check what page we are on!
+        ; Depending on the page, we need to perform different actions:
+        ;       R4 = 0: Title
+        ;       * R4 = 2
+
+        ;       R4 = 1: Name Loop
+        ;       * R4 = 2
+
+        ;       R4 = 2: Menu -- Question 1 (Sign?)
+        ;       * R4 = 3
+
+        ;       R4 = 3: Menu -- Question 2 (Dec -> Bin?)
+        ;       * If R6 == 0            -- R4 = 4
+        ;       * Else                  -- R4 = 5
+
+        ;       R4 = 4: Menu -- Question 3.a (Integer Bits - Dec)
+        ;       * R4 = 6
+
+        ;       R4 = 5: Menu -- Question 3.b (Integer Bits - Bin)
+        ;       * R4 = 6
+
+        ;       R4 = 6: Input Number Screen
+        ;       * If number >= 64       -- R4 = 7
+        ;       * Else                  -- R4 = 8
+
+        ;       R4 = 7: Error
+        ;       * R4 = 6
+
+        ;       R4 = 8: Conversion State
+        ;       * R4 = 9                // This will cause the program to loop "mainLoop"
+        JMP     endButtonCheck         ; Jump back to "startProgram"
+        
+;=========================== CHECK BUTTON SUBROUTINE ===========================
+
         
 
-; Call the respective page's subroutine. 
-; NOTE: The subroutine should eventually increase R4 to allow
+;=========================== DISPLAY SUBROUTINE ================================
+
 displayCurrentPage:
-
-        ; TODO: Check for button presses here?
-
         CMP     #0, R4
         JEQ     displayTitleScreen      ; Maybe we need to use CALL instead of JMP.
                                         ; Same goes for below.
@@ -259,8 +392,10 @@ displayName4:
 displaySignedQuestion:
           RET
 
+;=========================== DISPLAY SUBROUTINE ================================
 
-; =========================================================================
+
+;=========================== DELAY SUBROUTINE ==================================
 delay:  ; Used to delay the program
         ; giving the MSP time to handle
         ; button pressed (debouncing)
@@ -278,7 +413,7 @@ next:   ; Decrease R7 all the way to 0
         DEC     R7                       
         JNZ     next
         RET
-;==========================================================================
+;=========================== DELAY SUBROUTINE ==================================
 
 
 

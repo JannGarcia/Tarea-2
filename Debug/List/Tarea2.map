@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.6.2.104                                         #
 #                                                                              #
-#           Link time     =  01/Nov/2022  10:11:03                             #
+#           Link time     =  02/Nov/2022  08:21:24                             #
 #           Target CPU    =  MSP430                                            #
 #           List file     =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
 #                            List\Tarea2.map"                                  #
@@ -11,7 +11,7 @@
 #                            Format: ubrof10                                   #
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
-#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW9816.tmp   #
+#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW947C.tmp   #
 #                            ("D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug #
 #                            \Obj\asm.r43"                                     #
 #                            -o                                                #
@@ -132,7 +132,7 @@ CSTACK
   Segment part 0. ROOT 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 4400 - 60F5 (0x1cf6 bytes), align: 1
+  Relative segment, address: 4400 - 6269 (0x1e6a bytes), align: 1
   Segment part 1. ROOT        Intra module refs:   Absolute parts
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -148,21 +148,27 @@ CSTACK
            SorU_L                  601A 
            UnlockGPIO              6028 
            setupDisplayAndPorts    602C 
-           mainLoop                606C 
-           reset                   607A 
-           startProgram            6082 
-           endProgram              60F2 
-           displayCurrentPage      608E 
-           displayTitleScreen      609C 
-           displayNames            60C4 
-           displayMenu             60DE 
-           displayName1            60D6 
-           displayName2            60D8 
-           displayName3            60DA 
-           displayName4            60DC 
-           delay                   60E0 
-           delayStart              60EA 
-           next                    60EC 
+           mainLoop                6076 
+           reset                   6084 
+           startProgram            6092 
+           endProgram              6266 
+           checkButtonInput        60A2 
+           displayCurrentPage      6104 
+           checkS2                 60BE 
+           delay                   6254 
+           performActionForS1      60EC 
+           endButtonCheck          60DA 
+           performActionForS2      60F8 
+           stop                    60EA 
+           displayTitleScreen      6112 
+           displayNames            613A 
+           displaySignedQuestion   6252 
+           displayName1            614C 
+           displayName2            618E 
+           displayName3            61CC 
+           displayName4            6210 
+           delayStart              625E 
+           next                    6260 
 
 
 
@@ -177,7 +183,7 @@ CSTACK
 SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
 =======              =====    =============   ===========     ====  ====  =====
 CSTACK                                 2360 - 23FF              A0   rel    1
-<CODE> 1                               4400 - 60F5            1CF6   rel    1
+<CODE> 1                               4400 - 6269            1E6A   rel    1
                                        FFFE - FFFF               2  aseg  
 
                 ****************************************
@@ -186,7 +192,7 @@ CSTACK                                 2360 - 23FF              A0   rel    1
                 *                                      *
                 ****************************************
 
- 7 414 bytes of CODE memory (+ 2 absolute )
+ 7 786 bytes of CODE memory (+ 2 absolute )
    160 bytes of DATA memory
 
 Errors: none
