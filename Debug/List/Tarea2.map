@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.6.2.104                                         #
 #                                                                              #
-#           Link time     =  03/Nov/2022  09:29:33                             #
+#           Link time     =  03/Nov/2022  13:37:07                             #
 #           Target CPU    =  MSP430                                            #
 #           List file     =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
 #                            List\Tarea2.map"                                  #
@@ -11,7 +11,7 @@
 #                            Format: ubrof10                                   #
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
-#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW4AC6.tmp   #
+#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EWF471.tmp   #
 #                            ("D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug #
 #                            \Obj\asm.r43"                                     #
 #                            -o                                                #
@@ -181,8 +181,7 @@ CSTACK
                                    6150 
            performS1ActionForPage8
                                    6156 
-           endS1Page1Action        6130 
-           endS1Page5Action        614A 
+           endS1Action             615A 
            performS2ActionForPage0
                                    6192 
            performS2ActionForPage1
@@ -201,7 +200,7 @@ CSTACK
                                    61BA 
            performS2ActionForPage8
                                    61C0 
-           endS2Page3Action        61A8 
+           endS2Action             61C4 
            displayTitleScreen      61F4 
            displayNames            621C 
            displaySignedQuestion   6344 

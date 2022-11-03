@@ -258,59 +258,60 @@ performActionForS1:
 performS1ActionForPage0:        ; Title
         ; R4 = 1
         MOV     #1, R4
-        RET
+        JMP     endS1Action
         
         
 performS1ActionForPage1:        ; Name Loop
         ; R5++ % 4
         INC     R5
         CMP     #4, R5
-        JL      endS1Page1Action
+        JL      endS1Action
         MOV     #0, R5                  ; Reset R5
-        
-endS1Page1Action:
-        RET
+        JMP     endS1Action
+
 
 
 performS1ActionForPage2:        ; Signed or Unsigned?
         ; Toggle R6
         XOR     #BIT0, R6
-        RET
+        JMP     endS1Action
+
         
 performS1ActionForPage3:        ; Dec --> Bin?
         ; Toggle R7
         XOR     #BIT0, R7
-        RET
+        JMP     endS1Action
         
 performS1ActionForPage4:        ; Digits?
         ; Toggle R8
         XOR     #BIT0, R8
-        RET
+        JMP     endS1Action
         
 performS1ActionForPage5:        ; Bits?
         ; R8++ % 7
         INC     8
         CMP     #7, R8
-        JL      endS1Page5Action
+        JL      endS1Action
         MOV     #0, R8                  ; Reset R8
-        
-endS1Page5Action:
-        RET
+        JMP     endS1Action
+
         
 performS1ActionForPage6:        ; Number Choosing
         ; TEMP: Skip to Page 8
-        MOV     #8, R4
-        RET                             ; TODO
+        MOV     #8, R4                  ; TODO
+        JMP     endS1Action
 
 performS1ActionForPage7:        ; Error
         ; R4 = 6
         MOV     #6, R4
-        RET
+        JMP     endS1Action
         
 performS1ActionForPage8:        ; Conversion State
         ; R4 = 9
         MOV     #9, R4                  ; This will cause the program to loop "mainLoop"
-        RET
+
+endS1Action:
+        RET                             ; Return to "startProgram"
 
 ;=============================== S1 BUTTON ACTION END===========================
 
@@ -355,46 +356,54 @@ performActionForS2:
 performS2ActionForPage0:        ; Title
         ; R4 = 2
         MOV     #2, R4
-        RET
+        JMP     endS2Action
+        
 performS2ActionForPage1:        ; Name Loop
         ; R4 = 2
         MOV     #2, R4
-        RET
+        JMP     endS2Action
+        
 performS2ActionForPage2:        ; Sign?
         ; R4 = 3
         MOV     #3, R4
-        RET
+        JMP     endS2Action
+
 performS2ActionForPage3:        ; Dec --> Bin?
         ; R4 = 4 if R7 = 1, else R4 = 5
         MOV     #4, R4
         
         CMP     #1, R7
-        JEQ     endS2Page3Action
+        JEQ     endS2Action
         INC.b   R4
+        JMP     endS2Action
 
-endS2Page3Action:
-        RET
         
 performS2ActionForPage4:        ; Digs?
         ; R4 = 6
         MOV     #6, R4
-        RET
+        JMP     endS2Action
+
 performS2ActionForPage5:        ; Bits?
         ; R4 = 6
         MOV     #6, R4
-        RET
+        JMP     endS2Action
+        
 performS2ActionForPage6:        ; Number Choosing
         ; TEMP: Move to Page 8
         MOV     #8, R4
         ; TODO
-        RET
+        JMP     endS2Action
+        
 performS2ActionForPage7:        ; Error
         ; R4 = 6
         MOV     #6, R4
-        RET    
+        JMP     endS2Action
+        
 performS2ActionForPage8:        ; Conversion
         ; R4 = 9
         MOV     #9, R4                  ; This will cause the program to loop "mainLoop"
+        
+endS2Action:
         RET
         
 
