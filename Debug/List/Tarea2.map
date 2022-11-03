@@ -2,24 +2,30 @@
 #                                                                              #
 #      IAR Universal Linker V6.6.2.104                                         #
 #                                                                              #
-#           Link time     =  03/Nov/2022  09:29:33                             #
+#           Link time     =  03/Nov/2022  15:20:54                             #
 #           Target CPU    =  MSP430                                            #
-#           List file     =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
-#                            List\Tarea2.map"                                  #
-#           Output file 1 =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
-#                            Exe\Tarea2.d43"                                   #
+#           List file     =  "C:\Users\Vandiel\OneDrive - University of Puerto #
+#                             Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\T #
+#                            area-2\Debug\List\Tarea2.map"                     #
+#           Output file 1 =  "C:\Users\Vandiel\OneDrive - University of Puerto #
+#                             Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\T #
+#                            area-2\Debug\Exe\Tarea2.d43"                      #
 #                            Format: ubrof10                                   #
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
-#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW4AC6.tmp   #
-#                            ("D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug #
-#                            \Obj\asm.r43"                                     #
+#           Command line  =  -f                                                #
+#                            C:\Users\Vandiel\AppData\Local\Temp\EW2E37.tmp    #
+#                            ("C:\Users\Vandiel\OneDrive - University of Puert #
+#                            o Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\ #
+#                            Tarea-2\Debug\Obj\asm.r43"                        #
 #                            -o                                                #
-#                            "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
-#                            Exe\Tarea2.d43"                                   #
+#                            "C:\Users\Vandiel\OneDrive - University of Puerto #
+#                             Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\T #
+#                            area-2\Debug\Exe\Tarea2.d43"                      #
 #                            -l                                                #
-#                            "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
-#                            List\Tarea2.map"                                  #
+#                            "C:\Users\Vandiel\OneDrive - University of Puerto #
+#                             Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\T #
+#                            area-2\Debug\List\Tarea2.map"                     #
 #                            -xms                                              #
 #                            "-IC:\Program Files (x86)\IAR Systems\Embedded Wo #
 #                            rkbench 8.5\430\LIB\\"                            #
@@ -117,7 +123,7 @@ Absolute parts
            __iar_HWMUL             04C0 
     *************************************************************************
 
-  FILE NAME : D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\Obj\asm.r43
+  FILE NAME : C:\Users\Vandiel\OneDrive - University of Puerto Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\Tarea-2\Debug\Obj\asm.r43
   PROGRAM MODULE, NAME : main
 
 Absolute parts
@@ -132,93 +138,106 @@ CSTACK
   Segment part 0. ROOT 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 4400 - 64A7 (0x20a8 bytes), align: 1
+  Relative segment, address: 4400 - 6517 (0x2118 bytes), align: 1
   Segment part 1. ROOT        Intra module refs:   Absolute parts
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           main                    6020 
+           main                    6090 
            LOCAL                   ADDRESS         
            =====                   =======         
-           init                    601C 
-           digitH                  6000 
-           digitL                  600A 
-           yesNoH                  6014 
-           yesNoL                  6016 
-           SorUH                   6018 
-           SorU_L                  601A 
-           UnlockGPIO              6028 
-           setupDisplayAndPorts    602C 
-           mainLoop                6076 
-           reset                   6084 
-           startProgram            6096 
-           endProgram              64A4 
-           checkButtonInput        60A6 
-           displayCurrentPage      61C6 
-           checkS2                 60C4 
-           delay                   6492 
+           init                    608C 
+           S1                      6000 
+           S2                      6001 
+           CharH                   6002 
+           CharL                   6020 
+           digitH                  603E 
+           digitL                  6048 
+           JANN                    6052 
+           VANDIE                  6058 
+           ISABEL                  605E 
+           RICARD                  6064 
+           yesNoH                  606A 
+           yesNoL                  606C 
+           SorUH                   606E 
+           SorU_L                  6070 
+           signQuest               6072 
+           dtbQuest                6077 
+           digitDis                607C 
+           bitsDis                 6081 
+           errorDis                6086 
+           UnlockGPIO              6098 
+           setupDisplayAndPorts    609C 
+           mainLoop                60E6 
+           reset                   60F4 
+           startProgram            6106 
+           endProgram              6514 
+           checkButtonInput        6116 
+           displayCurrentPage      6236 
+           checkS2                 6134 
+           delay                   6502 
            jumpToPerformActionForS1
-                                   60E2 
-           endButtonCheck          60EC 
+                                   6152 
+           endButtonCheck          615C 
            jumpToPerformActionForS2
-                                   60E8 
-           performActionForS1      60EE 
-           performActionForS2      615C 
+                                   6158 
+           performActionForS1      615E 
+           performActionForS2      61CC 
            performS1ActionForPage0
-                                   6124 
+                                   6194 
            performS1ActionForPage1
-                                   6128 
+                                   6198 
            performS1ActionForPage2
-                                   6132 
+                                   61A2 
            performS1ActionForPage3
-                                   6136 
+                                   61A6 
            performS1ActionForPage4
-                                   613A 
-           performS1ActionForPage5
-                                   613E 
-           performS1ActionForPage6
-                                   614C 
-           performS1ActionForPage7
-                                   6150 
-           performS1ActionForPage8
-                                   6156 
-           endS1Page1Action        6130 
-           endS1Page5Action        614A 
-           performS2ActionForPage0
-                                   6192 
-           performS2ActionForPage1
-                                   6196 
-           performS2ActionForPage2
-                                   619A 
-           performS2ActionForPage3
-                                   61A0 
-           performS2ActionForPage4
                                    61AA 
-           performS2ActionForPage5
-                                   61B0 
-           performS2ActionForPage6
-                                   61B6 
-           performS2ActionForPage7
-                                   61BA 
-           performS2ActionForPage8
+           performS1ActionForPage5
+                                   61AE 
+           performS1ActionForPage6
+                                   61BC 
+           performS1ActionForPage7
                                    61C0 
-           endS2Page3Action        61A8 
-           displayTitleScreen      61F4 
-           displayNames            621C 
-           displaySignedQuestion   6344 
+           performS1ActionForPage8
+                                   61C6 
+           endS1Page1Action        61A0 
+           endS1Page5Action        61BA 
+           performS2ActionForPage0
+                                   6202 
+           performS2ActionForPage1
+                                   6206 
+           performS2ActionForPage2
+                                   620A 
+           performS2ActionForPage3
+                                   6210 
+           performS2ActionForPage4
+                                   621A 
+           performS2ActionForPage5
+                                   6220 
+           performS2ActionForPage6
+                                   6226 
+           performS2ActionForPage7
+                                   622A 
+           performS2ActionForPage8
+                                   6230 
+           endS2Page3Action        6218 
+           displayTitleScreen      6264 
+           displayNames            628C 
+           displaySignedQuestion   63B4 
            displayDecToBinQuestion
-                                   6390 
-           displayDigitsQuestion   63DA 
-           displayBitsQuestion     6416 
-           displayNumberInput      6454 
-           displayError            6454 
-           displayConversion       6490 
-           displayName1            622E 
-           displayName2            6270 
-           displayName3            62AE 
-           displayName4            62F2 
-           displayY                6338 
-           delayStart              649C 
-           next                    649E 
+                                   6400 
+           displayDigitsQuestion   644A 
+           displayBitsQuestion     6486 
+           displayNumberInput      64C4 
+           displayError            64C4 
+           displayConversion       6500 
+           displayName1            629E 
+           displayName2            62E0 
+           displayName3            631E 
+           displayName4            6362 
+           displayY                63A8 
+           delayStart              650C 
+           next                    650E 
 
 
 
@@ -233,7 +252,7 @@ CSTACK
 SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
 =======              =====    =============   ===========     ====  ====  =====
 CSTACK                                 2360 - 23FF              A0   rel    1
-<CODE> 1                               4400 - 64A7            20A8   rel    1
+<CODE> 1                               4400 - 6517            2118   rel    1
                                        FFFE - FFFF               2  aseg  
 
                 ****************************************
@@ -242,7 +261,7 @@ CSTACK                                 2360 - 23FF              A0   rel    1
                 *                                      *
                 ****************************************
 
- 8 360 bytes of CODE memory (+ 2 absolute )
+ 8 472 bytes of CODE memory (+ 2 absolute )
    160 bytes of DATA memory
 
 Errors: none
