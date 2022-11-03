@@ -120,8 +120,8 @@ reset:
                                         ;       * 2 = Name 3
                                         ;       * 3 = Name 4
 
-        MOV     #0, R6                  ; R6 = Signed/Unsigned boolean
-        MOV     #0, R7                  ; R7 = Dec -> Bin boolean / delay register
+        MOV     #0, R6                  ; R6 = Signed/Unsigned boolean (1 = Y, 0 = N)
+        MOV     #0, R7                  ; R7 = Dec -> Bin boolean / delay register (1 = Y, 0 = N)
         MOV     #0, R8                  ; R8 = # of integer bits [0-6 binary, 1-2 decimal]
 
         MOV     #0, R9                  ; R9 = P1 Value (S1 = Bit 1, S2 = Bit 2)
@@ -271,21 +271,15 @@ performS1ActionForPage1:        ; Name Loop
 endS1Page1Action:
         RET
 
-displayN:
-        MOV.B   #0x6C, &0xA27           ;N high bit
-        MOV.B   #0x82, &0xA28   
-        RET
-        
+
 performS1ActionForPage2:        ; Signed or Unsigned?
         ; Toggle R6
         XOR     #BIT0, R6
-        CALL    #displayN
         RET
         
 performS1ActionForPage3:        ; Dec --> Bin?
         ; Toggle R7
         XOR     #BIT0, R7
-        CALL    #displayN
         RET
         
 performS1ActionForPage4:        ; Digits?
@@ -371,9 +365,10 @@ performS2ActionForPage2:        ; Sign?
         MOV     #3, R4
         RET
 performS2ActionForPage3:        ; Dec --> Bin?
-        ; R4 = 4 if R6 =0, else R4 = 5
+        ; R4 = 4 if R7 = 1, else R4 = 5
         MOV     #4, R4
-        CMP     #0, R6
+        
+        CMP     #1, R7
         JEQ     endS2Page3Action
         INC.b   R4
 
@@ -545,6 +540,12 @@ displayY:
         MOV.B   #0xB0, &0xA28           ;Y low bit
         RET
         
+;displayN:
+;        MOV.B   #0x6C, &0xA27           ;N high bit
+;        MOV.B   #0x82, &0xA28           ;N low bit
+;        RET
+        
+        
 displaySignedQuestion:
         MOV.B   #0xB1, &0xA29           ;S high byte
         MOV.B   #0x80, &0xA2A           ;S low byte
@@ -556,7 +557,12 @@ displaySignedQuestion:
         MOV.B   #0x82, &0xA33           ;N low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
-        CMP     #BIT0, R6
+
+        ; Display N by default
+        MOV.B   #0x6C, &0xA27           ;N high bit
+        MOV.B   #0x82, &0xA28           ;N low bit
+
+        CMP     #1, R6
         JEQ     displayY
         RET
         
@@ -571,7 +577,12 @@ displayDecToBinQuestion:
         MOV.B   #0x50, &0xA33           ;B low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
-        CMP     #BIT0, R7
+
+        ; Display N by default
+        MOV.B   #0x6C, &0xA27           ;N high bit
+        MOV.B   #0x82, &0xA28           ;N low bit
+
+        CMP     #1, R7
         JEQ     displayY
         RET
         
@@ -616,6 +627,7 @@ displayError:
         MOV.B   #0x00, &0xA27           ;Empty
         MOV.B   #0x00, &0xA28           ;Empty
         RET
+        
 displayConversion:
           RET
 

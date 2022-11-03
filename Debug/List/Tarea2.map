@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.6.2.104                                         #
 #                                                                              #
-#           Link time     =  02/Nov/2022  10:25:31                             #
+#           Link time     =  03/Nov/2022  09:29:33                             #
 #           Target CPU    =  MSP430                                            #
 #           List file     =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
 #                            List\Tarea2.map"                                  #
@@ -11,7 +11,7 @@
 #                            Format: ubrof10                                   #
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
-#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW357B.tmp   #
+#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW4AC6.tmp   #
 #                            ("D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug #
 #                            \Obj\asm.r43"                                     #
 #                            -o                                                #
@@ -132,7 +132,7 @@ CSTACK
   Segment part 0. ROOT 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 4400 - 634B (0x1f4c bytes), align: 1
+  Relative segment, address: 4400 - 64A7 (0x20a8 bytes), align: 1
   Segment part 1. ROOT        Intra module refs:   Absolute parts
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -151,11 +151,11 @@ CSTACK
            mainLoop                6076 
            reset                   6084 
            startProgram            6096 
-           endProgram              6348 
+           endProgram              64A4 
            checkButtonInput        60A6 
            displayCurrentPage      61C6 
            checkS2                 60C4 
-           delay                   6336 
+           delay                   6492 
            jumpToPerformActionForS1
                                    60E2 
            endButtonCheck          60EC 
@@ -204,20 +204,21 @@ CSTACK
            endS2Page3Action        61A8 
            displayTitleScreen      61F4 
            displayNames            621C 
-           displaySignedQuestion   6334 
+           displaySignedQuestion   6344 
            displayDecToBinQuestion
-                                   6334 
-           displayDigitsQuestion   6334 
-           displayBitsQuestion     6334 
-           displayNumberInput      6334 
-           displayError            6334 
-           displayConversion       6334 
+                                   6390 
+           displayDigitsQuestion   63DA 
+           displayBitsQuestion     6416 
+           displayNumberInput      6454 
+           displayError            6454 
+           displayConversion       6490 
            displayName1            622E 
            displayName2            6270 
            displayName3            62AE 
            displayName4            62F2 
-           delayStart              6340 
-           next                    6342 
+           displayY                6338 
+           delayStart              649C 
+           next                    649E 
 
 
 
@@ -232,7 +233,7 @@ CSTACK
 SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
 =======              =====    =============   ===========     ====  ====  =====
 CSTACK                                 2360 - 23FF              A0   rel    1
-<CODE> 1                               4400 - 634B            1F4C   rel    1
+<CODE> 1                               4400 - 64A7            20A8   rel    1
                                        FFFE - FFFF               2  aseg  
 
                 ****************************************
@@ -241,7 +242,7 @@ CSTACK                                 2360 - 23FF              A0   rel    1
                 *                                      *
                 ****************************************
 
- 8 012 bytes of CODE memory (+ 2 absolute )
+ 8 360 bytes of CODE memory (+ 2 absolute )
    160 bytes of DATA memory
 
 Errors: none
