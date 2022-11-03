@@ -226,31 +226,31 @@ performActionForS1:
 ;        CALL    #delay                  // Show the LED
         
         CMP     #0, R4
-        JEQ     performS1ActionForPage0
+        JEQ     performS1ActionForPage0 ; Title Page
         
         CMP     #1, R4
-        JEQ     performS1ActionForPage1
+        JEQ     performS1ActionForPage1 ; Name Loop Page
         
         CMP     #2, R4
-        JEQ     performS1ActionForPage2
+        JEQ     performS1ActionForPage2 ; Signed or Unsigned?
         
         CMP     #3, R4
-        JEQ     performS1ActionForPage3
+        JEQ     performS1ActionForPage3 ; Dec --> Bin?
         
         CMP     #4, R4
-        JEQ     performS1ActionForPage4
+        JEQ     performS1ActionForPage4 ; Digits? 
         
         CMP     #5, R4
-        JEQ     performS1ActionForPage5
+        JEQ     performS1ActionForPage5 ; Bits?
         
         CMP     #6, R4
-        JEQ     performS1ActionForPage6
+        JEQ     performS1ActionForPage6 ; Number Input
         
         CMP     #7, R4
-        JEQ     performS1ActionForPage7
+        JEQ     performS1ActionForPage7 ; Error
         
         CMP     #8, R4
-        JEQ     performS1ActionForPage8
+        JEQ     performS1ActionForPage8 ; Conversion State
         
 ; We need to check what page we are on!
 ; Depending on the page, we need to perform different actions:
@@ -281,7 +281,7 @@ performS1ActionForPage3:        ; Dec --> Bin?
         XOR     #BIT0, R7
         RET
         
-performS1ActionForPage4:        ; Digs?
+performS1ActionForPage4:        ; Digits?
         ; Toggle R8
         XOR     #BIT0, R8
         RET
