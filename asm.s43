@@ -149,8 +149,8 @@ reset:
                                         ;       * 2 = Name 3
                                         ;       * 3 = Name 4
 
-        MOV     #0, R6                  ; R6 = Signed/Unsigned boolean (1 = Y, 0 = N)
-        MOV     #0, R7                  ; R7 = Dec -> Bin boolean / delay register (1 = Y, 0 = N)
+        MOV     #1, R6                  ; R6 = Signed/Unsigned boolean (1 = Y, 0 = N)
+        MOV     #1, R7                  ; R7 = Dec -> Bin boolean / delay register (1 = Y, 0 = N)
         MOV     #0, R8                  ; R8 = # of integer bits [0-6 binary, 1-2 decimal]
 
         MOV     #0, R9                  ; R9 = P1 Value (S1 = Bit 1, S2 = Bit 2)
