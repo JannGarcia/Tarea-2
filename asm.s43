@@ -586,7 +586,6 @@ displayDigitsQuestion:
         MOV.B   #0x80, &0xA33           ;S low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
-        CALL    #displayY
         RET
         
 displayBitsQuestion:
@@ -600,7 +599,6 @@ displayBitsQuestion:
         MOV.B   #0x80, &0xA33           ;S low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
-        CALL    #displayY
         RET
         
 displayNumberInput:
