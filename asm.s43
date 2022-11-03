@@ -548,6 +548,20 @@ displaySignedQuestion:
         RET
         
 displayDecToBinQuestion:
+        MOV.B   #0xF0, &0xA29           ;D high byte
+        MOV.B   #0x50, &0xA2A           ;D low byte
+        MOV.B   #0x03, &0xA25           ;Arrow line high byte
+        MOV.B   #0x00 , &0xA26          ;Arrow line low byte
+        MOV.B   #0x00, &0xA23           ;Arrow head high byte
+        MOV.B   #10001000B, &0xA24      ;Arrow head low byte
+        MOV.B   #0xF1, &0xA32           ;B high byte
+        MOV.B   #0x50, &0xA33           ;B low byte
+        MOV.B   #11000101B, &0xA2E      ;Question Mark high byte
+        MOV.B   #00010000B, &0xA2F      ;Question Mark low byte
+        MOV.B   #0x00, &0xA27           ;Empty
+        MOV.B   #0x00, &0xA28           ;Empty
+        RET
+        
 displayDigitsQuestion:
 displayBitsQuestion:
 displayNumberInput:
