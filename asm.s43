@@ -541,8 +541,8 @@ displaySignedQuestion:
         MOV.B   #0x00, &0xA24           ;G low byte
         MOV.B   #0x6c, &0xA32           ;N high byte
         MOV.B   #0x82, &0xA33           ;N low byte
-        MOV.B   #11000101B, &0xA2E      ;Question Mark high byte
-        MOV.B   #00010000B, &0xA2F      ;Question Mark low byte
+        MOV.B   #0xC5, &0xA2E      ;Question Mark high byte
+        MOV.B   #0x10, &0xA2F      ;Question Mark low byte
         MOV.B   #0x00, &0xA27           ;Empty
         MOV.B   #0x00, &0xA28           ;Empty
         RET
@@ -556,8 +556,8 @@ displayDecToBinQuestion:
         MOV.B   #10001000B, &0xA24      ;Arrow head low byte
         MOV.B   #0xF1, &0xA32           ;B high byte
         MOV.B   #0x50, &0xA33           ;B low byte
-        MOV.B   #11000101B, &0xA2E      ;Question Mark high byte
-        MOV.B   #00010000B, &0xA2F      ;Question Mark low byte
+        MOV.B   #0xC5, &0xA2E      ;Question Mark high byte
+        MOV.B   #0x10, &0xA2F      ;Question Mark low byte
         MOV.B   #0x00, &0xA27           ;Empty
         MOV.B   #0x00, &0xA28           ;Empty
         RET
