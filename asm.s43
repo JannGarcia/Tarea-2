@@ -578,6 +578,20 @@ displayDigitsQuestion:
         RET
         
 displayBitsQuestion:
+        MOV.B   #0xF1, &0xA29           ;B high byte
+        MOV.B   #0x50, &0xA2A           ;B low byte
+        MOV.B   #0x90, &0xA25           ;I high byte
+        MOV.B   #0x50, &0xA26           ;I low byte
+        MOV.B   #0x80, &0xA23           ;T high byte
+        MOV.B   #0x50, &0xA24           ;T low byte
+        MOV.B   #0xB1, &0xA32           ;S high byte
+        MOV.B   #0x80, &0xA33           ;S low byte
+        MOV.B   #0xC5, &0xA2E      ;Question Mark high byte
+        MOV.B   #0x10, &0xA2F      ;Question Mark low byte
+        MOV.B   #0x00, &0xA27           ;Empty
+        MOV.B   #0x00, &0xA28           ;Empty
+        RET
+        
 displayNumberInput:
 displayError:
 displayConversion:
