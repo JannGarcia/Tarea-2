@@ -533,6 +533,11 @@ displayName4:
 ; displayMenu:
 ;         RET                             ; Return back to "startProgram"
 
+displayY:
+        MOV.B   #0x00, &0xA27           ;Y high bit
+        MOV.B   #0xB0, &0xA28           ;Y low bit
+        RET
+        
 displaySignedQuestion:
         MOV.B   #0xB1, &0xA29           ;S high byte
         MOV.B   #0x80, &0xA2A           ;S low byte
@@ -544,8 +549,7 @@ displaySignedQuestion:
         MOV.B   #0x82, &0xA33           ;N low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
-        MOV.B   #0x00, &0xA27           ;Empty
-        MOV.B   #0x00, &0xA28           ;Empty
+        CALL    #displayY
         RET
         
 displayDecToBinQuestion:
@@ -559,8 +563,7 @@ displayDecToBinQuestion:
         MOV.B   #0x50, &0xA33           ;B low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
-        MOV.B   #0x00, &0xA27           ;Empty
-        MOV.B   #0x00, &0xA28           ;Empty
+        CALL    #displayY
         RET
         
 displayDigitsQuestion:
@@ -574,8 +577,7 @@ displayDigitsQuestion:
         MOV.B   #0x80, &0xA33           ;S low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
-        MOV.B   #0x00, &0xA27           ;Empty
-        MOV.B   #0x00, &0xA28           ;Empty
+        CALL    #displayY
         RET
         
 displayBitsQuestion:
@@ -589,8 +591,7 @@ displayBitsQuestion:
         MOV.B   #0x80, &0xA33           ;S low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
-        MOV.B   #0x00, &0xA27           ;Empty
-        MOV.B   #0x00, &0xA28           ;Empty
+        CALL    #displayY
         RET
         
 displayNumberInput:
