@@ -2,40 +2,24 @@
 #                                                                              #
 #      IAR Universal Linker V6.6.2.104                                         #
 #                                                                              #
-<<<<<<< HEAD
-#           Link time     =  03/Nov/2022  17:52:08                             #
-=======
-#           Link time     =  03/Nov/2022  15:20:54                             #
->>>>>>> 617775bdca3ea48bef42c2fbb3544a3753fe6e61
+#           Link time     =  03/Nov/2022  18:15:08                             #
 #           Target CPU    =  MSP430                                            #
-#           List file     =  "C:\Users\Vandiel\OneDrive - University of Puerto #
-#                             Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\T #
-#                            area-2\Debug\List\Tarea2.map"                     #
-#           Output file 1 =  "C:\Users\Vandiel\OneDrive - University of Puerto #
-#                             Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\T #
-#                            area-2\Debug\Exe\Tarea2.d43"                      #
+#           List file     =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
+#                            List\Tarea2.map"                                  #
+#           Output file 1 =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
+#                            Exe\Tarea2.d43"                                   #
 #                            Format: ubrof10                                   #
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
-<<<<<<< HEAD
-#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW6DF4.tmp   #
+#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW7CE0.tmp   #
 #                            ("D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug #
 #                            \Obj\asm.r43"                                     #
-=======
-#           Command line  =  -f                                                #
-#                            C:\Users\Vandiel\AppData\Local\Temp\EW2E37.tmp    #
-#                            ("C:\Users\Vandiel\OneDrive - University of Puert #
-#                            o Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\ #
-#                            Tarea-2\Debug\Obj\asm.r43"                        #
->>>>>>> 617775bdca3ea48bef42c2fbb3544a3753fe6e61
 #                            -o                                                #
-#                            "C:\Users\Vandiel\OneDrive - University of Puerto #
-#                             Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\T #
-#                            area-2\Debug\Exe\Tarea2.d43"                      #
+#                            "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
+#                            Exe\Tarea2.d43"                                   #
 #                            -l                                                #
-#                            "C:\Users\Vandiel\OneDrive - University of Puerto #
-#                             Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\T #
-#                            area-2\Debug\List\Tarea2.map"                     #
+#                            "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
+#                            List\Tarea2.map"                                  #
 #                            -xms                                              #
 #                            "-IC:\Program Files (x86)\IAR Systems\Embedded Wo #
 #                            rkbench 8.5\430\LIB\\"                            #
@@ -133,22 +117,33 @@ Absolute parts
            __iar_HWMUL             04C0 
     *************************************************************************
 
-  FILE NAME : C:\Users\Vandiel\OneDrive - University of Puerto Rico\5th Year\CIIC4082-100\Tareas\Tarea 2\Code\Tarea-2\Debug\Obj\asm.r43
+  FILE NAME : D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\Obj\asm.r43
   PROGRAM MODULE, NAME : main
 
 Absolute parts
-     1C00 - 1C27
+     1C00 - 1C93
      FFFE - FFFF
            LOCAL                   ADDRESS         
            =====                   =======         
            __MSP430FR5922__        0000 
-           digitH                  1C00 
-           digitL                  1C0A 
-           yesNoH                  1C14 
-           yesNoL                  1C16 
-           SorUH                   1C18 
-           SorU_L                  1C1A 
-           inputNumber             1C1C 
+           S1                      1C00 
+           S2                      1C01 
+           CharH                   1C02 
+           CharL                   1C20 
+           digitH                  1C3E 
+           digitL                  1C48 
+           yesNoH                  1C52 
+           yesNoL                  1C54 
+           JANN                    1C56 
+           VANDIE                  1C5C 
+           ISABEL                  1C62 
+           RICARD                  1C68 
+           inputNumber             1C6E 
+           signQuest               1C7A 
+           dtbQuest                1C7F 
+           digitDis                1C84 
+           bitsDis                 1C89 
+           errorDis                1C8E 
   SEGMENTS IN THE MODULE
   ======================
 CSTACK
@@ -156,8 +151,7 @@ CSTACK
   Segment part 0. ROOT 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-<<<<<<< HEAD
-  Relative segment, address: 4400 - 4941 (0x542 bytes), align: 1
+  Relative segment, address: 4400 - 4945 (0x546 bytes), align: 1
   Segment part 1. ROOT        Intra module refs:   Absolute parts
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -170,13 +164,13 @@ CSTACK
            mainLoop                445A 
            reset                   447C 
            startProgram            4494 
-           endProgram              493E 
+           endProgram              4942 
            clearInputNumber        4468 
            clearLoop               446C 
            checkButtonInput        44A4 
            displayCurrentPage      45E2 
            checkS2                 44C2 
-           delay                   492C 
+           delay                   4930 
            jumpToPerformActionForS1
                                    44E0 
            endButtonCheck          44EA 
@@ -229,118 +223,16 @@ CSTACK
            displayDecToBinQuestion
                                    479C 
            displayDigitsQuestion   47E2 
-           displayBitsQuestion     482C 
-           displayNumberInput      4876 
-           displayError            48EE 
-           displayConversion       492A 
+           displayBitsQuestion     4830 
+           displayNumberInput      487A 
+           displayError            48F2 
+           displayConversion       492E 
            displayName1            464A 
            displayName2            468C 
            displayName3            46CA 
            displayName4            470E 
-           delayStart              4936 
-           next                    4938 
-=======
-  Relative segment, address: 4400 - 6517 (0x2118 bytes), align: 1
-  Segment part 1. ROOT        Intra module refs:   Absolute parts
-           ENTRY                   ADDRESS         REF BY
-           =====                   =======         ======
-           main                    6090 
-           LOCAL                   ADDRESS         
-           =====                   =======         
-           init                    608C 
-           S1                      6000 
-           S2                      6001 
-           CharH                   6002 
-           CharL                   6020 
-           digitH                  603E 
-           digitL                  6048 
-           JANN                    6052 
-           VANDIE                  6058 
-           ISABEL                  605E 
-           RICARD                  6064 
-           yesNoH                  606A 
-           yesNoL                  606C 
-           SorUH                   606E 
-           SorU_L                  6070 
-           signQuest               6072 
-           dtbQuest                6077 
-           digitDis                607C 
-           bitsDis                 6081 
-           errorDis                6086 
-           UnlockGPIO              6098 
-           setupDisplayAndPorts    609C 
-           mainLoop                60E6 
-           reset                   60F4 
-           startProgram            6106 
-           endProgram              6514 
-           checkButtonInput        6116 
-           displayCurrentPage      6236 
-           checkS2                 6134 
-           delay                   6502 
-           jumpToPerformActionForS1
-                                   6152 
-           endButtonCheck          615C 
-           jumpToPerformActionForS2
-                                   6158 
-           performActionForS1      615E 
-           performActionForS2      61CC 
-           performS1ActionForPage0
-                                   6194 
-           performS1ActionForPage1
-                                   6198 
-           performS1ActionForPage2
-                                   61A2 
-           performS1ActionForPage3
-                                   61A6 
-           performS1ActionForPage4
-                                   61AA 
-           performS1ActionForPage5
-                                   61AE 
-           performS1ActionForPage6
-                                   61BC 
-           performS1ActionForPage7
-                                   61C0 
-           performS1ActionForPage8
-                                   61C6 
-           endS1Page1Action        61A0 
-           endS1Page5Action        61BA 
-           performS2ActionForPage0
-                                   6202 
-           performS2ActionForPage1
-                                   6206 
-           performS2ActionForPage2
-                                   620A 
-           performS2ActionForPage3
-                                   6210 
-           performS2ActionForPage4
-                                   621A 
-           performS2ActionForPage5
-                                   6220 
-           performS2ActionForPage6
-                                   6226 
-           performS2ActionForPage7
-                                   622A 
-           performS2ActionForPage8
-                                   6230 
-           endS2Page3Action        6218 
-           displayTitleScreen      6264 
-           displayNames            628C 
-           displaySignedQuestion   63B4 
-           displayDecToBinQuestion
-                                   6400 
-           displayDigitsQuestion   644A 
-           displayBitsQuestion     6486 
-           displayNumberInput      64C4 
-           displayError            64C4 
-           displayConversion       6500 
-           displayName1            629E 
-           displayName2            62E0 
-           displayName3            631E 
-           displayName4            6362 
-           displayY                63A8 
-           delayStart              650C 
-           next                    650E 
->>>>>>> 617775bdca3ea48bef42c2fbb3544a3753fe6e61
+           delayStart              493A 
+           next                    493C 
 
 
 
@@ -355,12 +247,8 @@ CSTACK
 SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
 =======              =====    =============   ===========     ====  ====  =====
 CSTACK                                 2360 - 23FF              A0   rel    1
-<<<<<<< HEAD
-<CODE> 1                               4400 - 4941             542   rel    1
-                                       1C00 - 1C27              28  aseg  
-=======
-<CODE> 1                               4400 - 6517            2118   rel    1
->>>>>>> 617775bdca3ea48bef42c2fbb3544a3753fe6e61
+<CODE> 1                               4400 - 4945             546   rel    1
+                                       1C00 - 1C93              94  aseg  
                                        FFFE - FFFF               2  aseg  
 
                 ****************************************
@@ -369,11 +257,7 @@ CSTACK                                 2360 - 23FF              A0   rel    1
                 *                                      *
                 ****************************************
 
-<<<<<<< HEAD
- 1 346 bytes of CODE memory (+ 42 absolute )
-=======
- 8 472 bytes of CODE memory (+ 2 absolute )
->>>>>>> 617775bdca3ea48bef42c2fbb3544a3753fe6e61
+ 1 350 bytes of CODE memory (+ 150 absolute )
    160 bytes of DATA memory
 
 Errors: none

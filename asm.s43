@@ -16,18 +16,8 @@
 ;===============================================================================
 
 ;============================= TODOs ===========================================
-; 1) Setup buttons
-;       * Values need to be cleared and stuff.
-;       * Handle in "reset"?
-                                   
-; 2) State 6 Button Handling
-                                        
-; 3) Add all letters/digits as arrays (separating by high/low)
-
-; 4) Loop until a condition signifying "end" is reached
-;       * Currently we are checking if R4 is >= number_of_states
-
-; 5) Define checkButtonInput subroutine
+; 1) Render period
+; 2) Render a sign if signed == true (+/-) and decimal == true
                                         
 
 ;============================= ARRAY DEFINITIONS/SETUP =========================
@@ -433,6 +423,8 @@ performS2ActionForPage3:        ; Dec --> Bin?
         
         CMP     #1, R7
         JEQ     endS2Action
+        
+        ; Digits was chosen
         INC.b   R4
         JMP     endS2Action
 
@@ -635,6 +627,8 @@ displaySignedQuestion:
         RET
         
 displayDecToBinQuestion:
+        ; TODO: Check if sign is TRUE.
+        ; If it is, render a negative for the first digit
         MOV.B   #0xF0, &0xA29           ;D high byte
         MOV.B   #0x50, &0xA2A           ;D low byte
         MOV.B   #0x03, &0xA25           ;Arrow line high byte
@@ -663,10 +657,16 @@ displayDigitsQuestion:
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
 
+        ; Hacky workaround to increasing index by 1 :V
+        PUSH.b  R8
+        INC    R8
+
         MOV.B   digitH(R8), &0xA27           ;Digit high bit
         MOV.B   digitL(R8), &0xA28           ;Digit low bit
 
-        RET
+        POP.b     R8
+
+
         RET
         
 displayBitsQuestion:
