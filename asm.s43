@@ -7,9 +7,6 @@
         ORG     0FFFEh
         DC16    init                    ; set reset vector to 'init' label
 
-        RSEG    CSTACK                  ; pre-declaration of segment
-        RSEG    CODE                    ; place program in 'CODE' segment
-
         ORG     0x1C00                  ; RAM starting location
                                         ; Always define it when working with arrays
                                         ; or saving a variable to RAM directly
@@ -37,18 +34,26 @@
 ; Arrays need to be defined BEFORE "init"
 
 ; Digits        0     1     2     3     4      5      6      7      8     9
-digitH  DB      0xFC, 0x60, 0xDB, 0xF3, 0x00,  0x00,  0x00,  0x00,  0x00, 0x00
+digitH  DB      0xFC, 0x60, 0xDB, 0xF3, 0x67,  0xB7,  0xBF,  0xE0,  0xFF, 0xE7
 digitL  DB      0x20, 0x00, 0x00, 0x00, 0x00,  0x00,  0x00,  0x00,  0x00, 0x00
 
-;               Y    N       
-yesNoH  DB      0x00, 0x6C
-yesNoL  DB      0xB0, 0x82
+;               N       Y       
+yesNoH  DB      0x6C, 0x00
+yesNoL  DB      0x82, 0xB0 
 
 ;               S    U
 SorUH   DB      0xB7, 0x7C
 SorU_L  DB      0x00, 0x00
 
+
+;
+inputNumber DW  0, 0, 0, 0, 0, 0
+
+
 ;===============================================================================
+
+        RSEG    CSTACK                  ; pre-declaration of segment
+        RSEG    CODE                    ; place program in 'CODE' segment
 
 init:   MOV     #SFE(CSTACK), SP        ; set up stack
 
@@ -98,6 +103,21 @@ mainLoop:
         CALL    #endProgram             ; Never runs, as mainLoop goes on forever
 
 
+;=================================== Clear Input Number Subroutine =============
+clearInputNumber:
+        PUSH.b    R4                      ; Store R4
+        MOV     #0, R4
+
+clearLoop:
+        MOV     #0, inputNumber(R4)
+        INCD    R4                      ; R4 += 2
+        CMP     #12, R4                 
+        JL      clearLoop
+        POP.b     R4
+        
+        RET
+;===============================================================================
+
 ;================================== RESET SUBROUTINE ===========================
 ; Perform "Housekeeping" -- where we set every register/value to a default val
 reset:
@@ -126,7 +146,11 @@ reset:
 
         MOV     #0, R9                  ; R9 = P1 Value (S1 = Bit 1, S2 = Bit 2)
 
+        MOV     #0, R10                 ; R10 = InputNumber Index
+
         MOV     #2, &LCDCMEMCTL         ; clear LCD memory (resets screen)
+    
+        CALL    #clearInputNumber
 
         RET
         
@@ -286,19 +310,35 @@ performS1ActionForPage4:        ; Digits?
         ; Toggle R8
         XOR     #BIT0, R8
         JMP     endS1Action
+
         
 performS1ActionForPage5:        ; Bits?
         ; R8++ % 7
-        INC     8
+        INC     R8
         CMP     #7, R8
         JL      endS1Action
         MOV     #0, R8                  ; Reset R8
         JMP     endS1Action
 
+
         
 performS1ActionForPage6:        ; Number Choosing
-        ; TEMP: Skip to Page 8
-        MOV     #8, R4                  ; TODO
+
+        ; Check if we are in binary mode
+        CMP     #0, R7
+        JEQ     increaseBinaryDigit
+        
+        ; Increase Decimal Digit
+        INC     inputNumber(R10)                ; Increase digit
+        CMP     #0xA, inputNumber(R10)         ; Check if it has reached 10
+        JL     endS1Action
+        
+        MOV     #0, inputNumber(R10)           ; If so, reset it to 0
+
+        JMP     endS1Action
+        
+increaseBinaryDigit:
+        XOR     #1, inputNumber(R10)            ; Invert value
         JMP     endS1Action
 
 performS1ActionForPage7:        ; Error
@@ -389,9 +429,16 @@ performS2ActionForPage5:        ; Bits?
         JMP     endS2Action
         
 performS2ActionForPage6:        ; Number Choosing
-        ; TEMP: Move to Page 8
+        
+        INCD     R10             ; Increase Index
+        CMP     #12, R10         ; Check if we are still within index range
+        JL      endS2Action
+        
+        
+        ; Move to Conversion
+        ; TODO:
+        ; check if number is greater than 64, or do conversion
         MOV     #8, R4
-        ; TODO
         JMP     endS2Action
         
 performS2ActionForPage7:        ; Error
@@ -544,15 +591,7 @@ displayName4:
 ; displayMenu:
 ;         RET                             ; Return back to "startProgram"
 
-displayY:
-        MOV.B   #0x00, &0xA27           ;Y high bit
-        MOV.B   #0xB0, &0xA28           ;Y low bit
-        RET
-        
-;displayN:
-;        MOV.B   #0x6C, &0xA27           ;N high bit
-;        MOV.B   #0x82, &0xA28           ;N low bit
-;        RET
+
         
         
 displaySignedQuestion:
@@ -567,12 +606,9 @@ displaySignedQuestion:
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
 
-        ; Display N by default
-        MOV.B   #0x6C, &0xA27           ;N high bit
-        MOV.B   #0x82, &0xA28           ;N low bit
+        MOV.B   yesNoH(R6), &0xA27           ;Y/N high bit
+        MOV.B   yesNoL(R6), &0xA28           ;Y/N low bit
 
-        CMP     #1, R6
-        JEQ     displayY
         RET
         
 displayDecToBinQuestion:
@@ -587,12 +623,9 @@ displayDecToBinQuestion:
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
 
-        ; Display N by default
-        MOV.B   #0x6C, &0xA27           ;N high bit
-        MOV.B   #0x82, &0xA28           ;N low bit
+        MOV.B   yesNoH(R7), &0xA27           ;Y/N high bit
+        MOV.B   yesNoL(R7), &0xA28           ;Y/N low bit
 
-        CMP     #1, R7
-        JEQ     displayY
         RET
         
 displayDigitsQuestion:
@@ -606,6 +639,11 @@ displayDigitsQuestion:
         MOV.B   #0x80, &0xA33           ;S low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
+
+        MOV.B   digitH(R8), &0xA27           ;Digit high bit
+        MOV.B   digitL(R8), &0xA28           ;Digit low bit
+
+        RET
         RET
         
 displayBitsQuestion:
@@ -619,9 +657,59 @@ displayBitsQuestion:
         MOV.B   #0x80, &0xA33           ;S low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
+        
+        MOV.B   digitH(R8), &0xA27           ;Digit high bit
+        MOV.B   digitL(R8), &0xA28           ;Digit low bit
+
+
         RET
         
 displayNumberInput:
+        PUSH.w  R11                     ; digit Index
+        PUSH.w  R12                     ; Input Number Index
+        MOV     #0, R11
+        MOV     #0, R12
+        
+        ; Digit 0
+        MOV     inputNumber(R12), R11
+        MOV.B   digitH(R11),  &0xA29
+        MOV.B   digitL(R11) , &0xA2A         
+        
+        ; Digit 1
+        INCD    R12
+        MOV     inputNumber(R12), R11
+        MOV.B   digitH(R11),  &0xA25           
+        MOV.B   digitL(R11) , &0xA26  
+
+        ; Digit 2
+        INCD    R12
+        MOV     inputNumber(R12), R11
+        MOV.B   digitH(R11),  &0xA23           
+        MOV.B   digitL(R11) , &0xA24
+        
+        ; Digit 3
+        INCD    R12
+        MOV     inputNumber(R12), R11     
+        MOV.B   digitH(R11),  &0xA32           
+        MOV.B   digitL(R11) , &0xA33
+        
+        ; Digit 4
+        INCD    R12
+        MOV     inputNumber(R12), R11
+        MOV.B   digitH(R11),  &0xA2E           
+        MOV.B   digitL(R11) , &0xA2F
+        
+        ; Digit 5
+        INCD     R12
+        MOV     inputNumber(R12), R11
+        MOV.B   digitH(R11),  &0xA27           
+        MOV.B   digitL(R11) , &0xA28  
+
+
+        POP     R11
+        POP     R12
+        RET
+        
 displayError:
         MOV.B   #0x9F, &0xA29           ;E high byte
         MOV.B   #0x00 , &0xA2A          ;E low byte

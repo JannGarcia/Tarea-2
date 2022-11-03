@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.6.2.104                                         #
 #                                                                              #
-#           Link time     =  03/Nov/2022  13:37:07                             #
+#           Link time     =  03/Nov/2022  17:52:08                             #
 #           Target CPU    =  MSP430                                            #
 #           List file     =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
 #                            List\Tarea2.map"                                  #
@@ -11,7 +11,7 @@
 #                            Format: ubrof10                                   #
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
-#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EWF471.tmp   #
+#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW6DF4.tmp   #
 #                            ("D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug #
 #                            \Obj\asm.r43"                                     #
 #                            -o                                                #
@@ -121,10 +121,18 @@ Absolute parts
   PROGRAM MODULE, NAME : main
 
 Absolute parts
+     1C00 - 1C27
      FFFE - FFFF
            LOCAL                   ADDRESS         
            =====                   =======         
            __MSP430FR5922__        0000 
+           digitH                  1C00 
+           digitL                  1C0A 
+           yesNoH                  1C14 
+           yesNoL                  1C16 
+           SorUH                   1C18 
+           SorU_L                  1C1A 
+           inputNumber             1C1C 
   SEGMENTS IN THE MODULE
   ======================
 CSTACK
@@ -132,92 +140,88 @@ CSTACK
   Segment part 0. ROOT 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 4400 - 64A7 (0x20a8 bytes), align: 1
+  Relative segment, address: 4400 - 4941 (0x542 bytes), align: 1
   Segment part 1. ROOT        Intra module refs:   Absolute parts
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
-           main                    6020 
+           main                    4404 
            LOCAL                   ADDRESS         
            =====                   =======         
-           init                    601C 
-           digitH                  6000 
-           digitL                  600A 
-           yesNoH                  6014 
-           yesNoL                  6016 
-           SorUH                   6018 
-           SorU_L                  601A 
-           UnlockGPIO              6028 
-           setupDisplayAndPorts    602C 
-           mainLoop                6076 
-           reset                   6084 
-           startProgram            6096 
-           endProgram              64A4 
-           checkButtonInput        60A6 
-           displayCurrentPage      61C6 
-           checkS2                 60C4 
-           delay                   6492 
+           init                    4400 
+           UnlockGPIO              440C 
+           setupDisplayAndPorts    4410 
+           mainLoop                445A 
+           reset                   447C 
+           startProgram            4494 
+           endProgram              493E 
+           clearInputNumber        4468 
+           clearLoop               446C 
+           checkButtonInput        44A4 
+           displayCurrentPage      45E2 
+           checkS2                 44C2 
+           delay                   492C 
            jumpToPerformActionForS1
-                                   60E2 
-           endButtonCheck          60EC 
+                                   44E0 
+           endButtonCheck          44EA 
            jumpToPerformActionForS2
-                                   60E8 
-           performActionForS1      60EE 
-           performActionForS2      615C 
+                                   44E6 
+           performActionForS1      44EC 
+           performActionForS2      4570 
            performS1ActionForPage0
-                                   6124 
+                                   4522 
            performS1ActionForPage1
-                                   6128 
+                                   4526 
            performS1ActionForPage2
-                                   6132 
+                                   4530 
            performS1ActionForPage3
-                                   6136 
+                                   4534 
            performS1ActionForPage4
-                                   613A 
+                                   4538 
            performS1ActionForPage5
-                                   613E 
+                                   453C 
            performS1ActionForPage6
-                                   614C 
+                                   4548 
            performS1ActionForPage7
-                                   6150 
+                                   4564 
            performS1ActionForPage8
-                                   6156 
-           endS1Action             615A 
+                                   456A 
+           endS1Action             456E 
+           increaseBinaryDigit     455E 
            performS2ActionForPage0
-                                   6192 
+                                   45A6 
            performS2ActionForPage1
-                                   6196 
+                                   45AA 
            performS2ActionForPage2
-                                   619A 
+                                   45AE 
            performS2ActionForPage3
-                                   61A0 
+                                   45B4 
            performS2ActionForPage4
-                                   61AA 
+                                   45BE 
            performS2ActionForPage5
-                                   61B0 
+                                   45C4 
            performS2ActionForPage6
-                                   61B6 
+                                   45CA 
            performS2ActionForPage7
-                                   61BA 
+                                   45D6 
            performS2ActionForPage8
-                                   61C0 
-           endS2Action             61C4 
-           displayTitleScreen      61F4 
-           displayNames            621C 
-           displaySignedQuestion   6344 
+                                   45DC 
+           endS2Action             45E0 
+           displayTitleScreen      4610 
+           displayNames            4638 
+           displaySignedQuestion   4754 
            displayDecToBinQuestion
-                                   6390 
-           displayDigitsQuestion   63DA 
-           displayBitsQuestion     6416 
-           displayNumberInput      6454 
-           displayError            6454 
-           displayConversion       6490 
-           displayName1            622E 
-           displayName2            6270 
-           displayName3            62AE 
-           displayName4            62F2 
-           displayY                6338 
-           delayStart              649C 
-           next                    649E 
+                                   479C 
+           displayDigitsQuestion   47E2 
+           displayBitsQuestion     482C 
+           displayNumberInput      4876 
+           displayError            48EE 
+           displayConversion       492A 
+           displayName1            464A 
+           displayName2            468C 
+           displayName3            46CA 
+           displayName4            470E 
+           delayStart              4936 
+           next                    4938 
 
 
 
@@ -232,7 +236,8 @@ CSTACK
 SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
 =======              =====    =============   ===========     ====  ====  =====
 CSTACK                                 2360 - 23FF              A0   rel    1
-<CODE> 1                               4400 - 64A7            20A8   rel    1
+<CODE> 1                               4400 - 4941             542   rel    1
+                                       1C00 - 1C27              28  aseg  
                                        FFFE - FFFF               2  aseg  
 
                 ****************************************
@@ -241,7 +246,7 @@ CSTACK                                 2360 - 23FF              A0   rel    1
                 *                                      *
                 ****************************************
 
- 8 360 bytes of CODE memory (+ 2 absolute )
+ 1 346 bytes of CODE memory (+ 42 absolute )
    160 bytes of DATA memory
 
 Errors: none
