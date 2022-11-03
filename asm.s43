@@ -186,7 +186,7 @@ checkButtonInput:
 
         MOV.b   &P1IN, R9               ; Get button state from P1 
         AND.b   #00000110B, R9          ; Apply bit mask to value
-        CMP.b   #00000100B, R9          ; Check if S1 was pressed (sets to 0 when pressed)
+        CMP.b   S1, R9          ; Check if S1 was pressed (sets to 0 when pressed)
         
         ; Skip to checking S2
         JNE     checkS2                 ; S1 wasn't pressed, check S2
@@ -200,7 +200,7 @@ checkButtonInput:
 
         ; Check if S1 was unpressed (sets to 0 when pressed)
         ; This is to prevent holding the button
-        CMP.b   #00000100B, R9          
+        CMP.b   S1, R9          
 
         JNE     jumpToPerformActionForS1
         JMP     endButtonCheck
@@ -211,7 +211,7 @@ checkS2:
 
         MOV.b   &P1IN, R9               ; Get button state from P1 
         AND.b   #00000110B, R9          ; Apply bit mask to value
-        CMP.b   #00000010B, R9          ; Check if S2 was pressed (sets to 0 when pressed)
+        CMP.b   S2, R9          ; Check if S2 was pressed (sets to 0 when pressed)
         
         JNE     endButtonCheck          ; S2 wasn't pressed, end button check
         
@@ -225,7 +225,7 @@ checkS2:
 
         ; Check if S2 was unpressed (sets to 0 when pressed)
         ; This is to prevent holding the button
-        CMP.b   #00000010B, R9         
+        CMP.b   S2, R9         
         JNE     jumpToPerformActionForS2
         JMP     endButtonCheck
                 
