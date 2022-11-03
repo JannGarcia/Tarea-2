@@ -270,10 +270,16 @@ performS1ActionForPage1:        ; Name Loop
         
 endS1Page1Action:
         RET
+
+displayN:
+        MOV.B   #0x6C, &0xA27           ;N high bit
+        MOV.B   #0x82, &0xA28   
+        RET
         
 performS1ActionForPage2:        ; Signed or Unsigned?
         ; Toggle R6
         XOR     #BIT0, R6
+        CALL    #displayN
         RET
         
 performS1ActionForPage3:        ; Dec --> Bin?
@@ -549,7 +555,8 @@ displaySignedQuestion:
         MOV.B   #0x82, &0xA33           ;N low byte
         MOV.B   #0xC5, &0xA2E           ;Question Mark high byte
         MOV.B   #0x10, &0xA2F           ;Question Mark low byte
-        CALL    #displayY
+        CMP     #BIT0, R6
+        JEQ     displayY
         RET
         
 displayDecToBinQuestion:
