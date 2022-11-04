@@ -726,12 +726,12 @@ displayNumberInput:
         
         ; Check if number is decimal input
         CMP     #1, R7
-        JEQ     displaySignForDigit0
+        JEQ     decimalConfiguration
         
         ; Digit 0
         MOV     inputNumber(R12), R11
         MOV.B   digitH(R11),  &0xA29
-        MOV.B   digitL(R11) , &0xA2A 
+        MOV.B   #0x0 , &0xA2A 
         
         JMP     displayOtherDigits
         
@@ -741,7 +741,8 @@ displayNothingForDigit0:
         MOV.B   #0x0,  &0xA2A 
         JMP     displayOtherDigits
         
-displaySignForDigit0:
+decimalConfiguration: 
+displaySignedNumber:
         ; Check if the number is signed
         CMP     #1, R6
         JNE     displayNothingForDigit0      ; Skip digit 0 if not signed
@@ -756,33 +757,48 @@ displayOtherDigits:
         INCD    R12
         MOV     inputNumber(R12), R11
         MOV.B   digitH(R11),  &0xA25           
-        MOV.B   digitL(R11) , &0xA26  
 
         ; Digit 2
         INCD    R12
         MOV     inputNumber(R12), R11
         MOV.B   digitH(R11),  &0xA23           
-        MOV.B   digitL(R11) , &0xA24
         
         ; Digit 3
         INCD    R12
         MOV     inputNumber(R12), R11     
         MOV.B   digitH(R11),  &0xA32           
-        MOV.B   digitL(R11) , &0xA33
+        MOV.B   #0x0, &0xA33
         
         ; Digit 4
         INCD    R12
         MOV     inputNumber(R12), R11
         MOV.B   digitH(R11),  &0xA2E           
-        MOV.B   digitL(R11) , &0xA2F
+        MOV.B   #0x0, &0xA2F
         
         ; Digit 5
         INCD     R12
         MOV     inputNumber(R12), R11
         MOV.B   digitH(R11),  &0xA27           
-        MOV.B   digitL(R11) , &0xA28  
+        MOV.B   #0x0, &0xA28  
+        
+        ; Render the dot, if needed
+        ; First check if we are in decimal mode
+        CMP     #1, R7
+        JNE     endDigitsDisplay
+        
+        ; Render the period at index R8
+        CMP     #0, R8
+        JEQ     displayPointAtAddress26
+        MOV.B     #0x1, &0xA24
+        MOV.B     #0x0, &0xA26
+        JMP     endDigitsDisplay
+        
+displayPointAtAddress26
+        MOV.B     #0x1, &0xA26       ; Set a point to the decimal location
+        MOV.B     #0x0, &0xA24
 
 
+endDigitsDisplay:
         POP     R11
         POP     R12
         RET
