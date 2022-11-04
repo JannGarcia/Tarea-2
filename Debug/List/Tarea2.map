@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.6.2.104                                         #
 #                                                                              #
-#           Link time     =  03/Nov/2022  18:15:08                             #
+#           Link time     =  04/Nov/2022  09:01:47                             #
 #           Target CPU    =  MSP430                                            #
 #           List file     =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
 #                            List\Tarea2.map"                                  #
@@ -11,7 +11,7 @@
 #                            Format: ubrof10                                   #
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
-#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW7CE0.tmp   #
+#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW4397.tmp   #
 #                            ("D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug #
 #                            \Obj\asm.r43"                                     #
 #                            -o                                                #
@@ -121,7 +121,7 @@ Absolute parts
   PROGRAM MODULE, NAME : main
 
 Absolute parts
-     1C00 - 1C93
+     1C00 - 1C97
      FFFE - FFFF
            LOCAL                   ADDRESS         
            =====                   =======         
@@ -134,16 +134,18 @@ Absolute parts
            digitL                  1C48 
            yesNoH                  1C52 
            yesNoL                  1C54 
-           JANN                    1C56 
-           VANDIE                  1C5C 
-           ISABEL                  1C62 
-           RICARD                  1C68 
-           inputNumber             1C6E 
-           signQuest               1C7A 
-           dtbQuest                1C7F 
-           digitDis                1C84 
-           bitsDis                 1C89 
-           errorDis                1C8E 
+           posOrNegH               1C56 
+           posOrNegL               1C58 
+           JANN                    1C5A 
+           VANDIE                  1C60 
+           ISABEL                  1C66 
+           RICARD                  1C6C 
+           inputNumber             1C72 
+           signQuest               1C7E 
+           dtbQuest                1C83 
+           digitDis                1C88 
+           bitsDis                 1C8D 
+           errorDis                1C92 
   SEGMENTS IN THE MODULE
   ======================
 CSTACK
@@ -151,7 +153,7 @@ CSTACK
   Segment part 0. ROOT 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 4400 - 4945 (0x546 bytes), align: 1
+  Relative segment, address: 4400 - 4981 (0x582 bytes), align: 1
   Segment part 1. ROOT        Intra module refs:   Absolute parts
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -164,75 +166,82 @@ CSTACK
            mainLoop                445A 
            reset                   447C 
            startProgram            4494 
-           endProgram              4942 
+           endProgram              497E 
            clearInputNumber        4468 
            clearLoop               446C 
            checkButtonInput        44A4 
-           displayCurrentPage      45E2 
-           checkS2                 44C2 
-           delay                   4930 
+           displayCurrentPage      45FA 
+           checkS2                 44C6 
+           delay                   496C 
            jumpToPerformActionForS1
-                                   44E0 
-           endButtonCheck          44EA 
+                                   44E8 
+           endButtonCheck          44F2 
            jumpToPerformActionForS2
-                                   44E6 
-           performActionForS1      44EC 
-           performActionForS2      4570 
+                                   44EE 
+           performActionForS1      44F4 
+           performActionForS2      4580 
            performS1ActionForPage0
-                                   4522 
+                                   452A 
            performS1ActionForPage1
-                                   4526 
+                                   452E 
            performS1ActionForPage2
-                                   4530 
-           performS1ActionForPage3
-                                   4534 
-           performS1ActionForPage4
                                    4538 
-           performS1ActionForPage5
+           performS1ActionForPage3
                                    453C 
+           performS1ActionForPage4
+                                   4540 
+           performS1ActionForPage5
+                                   4544 
            performS1ActionForPage6
-                                   4548 
+                                   4550 
            performS1ActionForPage7
-                                   4564 
+                                   4574 
            performS1ActionForPage8
-                                   456A 
-           endS1Action             456E 
-           increaseBinaryDigit     455E 
+                                   457A 
+           endS1Action             457E 
+           increaseBinaryDigit     456E 
+           checkIfFirstNumber      456A 
+           increaseDecimalDigit    4558 
            performS2ActionForPage0
-                                   45A6 
+                                   45B6 
            performS2ActionForPage1
-                                   45AA 
+                                   45BA 
            performS2ActionForPage2
-                                   45AE 
-           performS2ActionForPage3
-                                   45B4 
-           performS2ActionForPage4
                                    45BE 
-           performS2ActionForPage5
+           performS2ActionForPage3
                                    45C4 
-           performS2ActionForPage6
-                                   45CA 
-           performS2ActionForPage7
+           performS2ActionForPage4
                                    45D6 
-           performS2ActionForPage8
+           performS2ActionForPage5
                                    45DC 
-           endS2Action             45E0 
-           displayTitleScreen      4610 
-           displayNames            4638 
-           displaySignedQuestion   4754 
+           performS2ActionForPage6
+                                   45E2 
+           performS2ActionForPage7
+                                   45EE 
+           performS2ActionForPage8
+                                   45F4 
+           endS2Action             45F8 
+           configureDecimalInput   45CE 
+           displayTitleScreen      4628 
+           displayNames            4650 
+           displaySignedQuestion   476C 
            displayDecToBinQuestion
-                                   479C 
-           displayDigitsQuestion   47E2 
-           displayBitsQuestion     4830 
-           displayNumberInput      487A 
-           displayError            48F2 
-           displayConversion       492E 
-           displayName1            464A 
-           displayName2            468C 
-           displayName3            46CA 
-           displayName4            470E 
-           delayStart              493A 
-           next                    493C 
+                                   47B4 
+           displayDigitsQuestion   47FA 
+           displayBitsQuestion     4848 
+           displayNumberInput      4892 
+           displayError            492E 
+           displayConversion       496A 
+           displayName1            4662 
+           displayName2            46A4 
+           displayName3            46E2 
+           displayName4            4726 
+           displaySignForDigit0    48BA 
+           displayOtherDigits      48CE 
+           displayNothingForDigit0
+                                   48B0 
+           delayStart              4976 
+           next                    4978 
 
 
 
@@ -247,8 +256,8 @@ CSTACK
 SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
 =======              =====    =============   ===========     ====  ====  =====
 CSTACK                                 2360 - 23FF              A0   rel    1
-<CODE> 1                               4400 - 4945             546   rel    1
-                                       1C00 - 1C93              94  aseg  
+<CODE> 1                               4400 - 4981             582   rel    1
+                                       1C00 - 1C97              98  aseg  
                                        FFFE - FFFF               2  aseg  
 
                 ****************************************
@@ -257,7 +266,7 @@ CSTACK                                 2360 - 23FF              A0   rel    1
                 *                                      *
                 ****************************************
 
- 1 350 bytes of CODE memory (+ 150 absolute )
+ 1 410 bytes of CODE memory (+ 154 absolute )
    160 bytes of DATA memory
 
 Errors: none

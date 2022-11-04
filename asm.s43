@@ -18,6 +18,10 @@
 ;============================= TODOs ===========================================
 ; 1) Render period
 ; 2) Render a sign if signed == true (+/-) and decimal == true
+; 3) Conversion
+; 4) Handle >= 64 case
+; 5) Display conversion
+; 6) Documentation
                                         
 
 ;============================= ARRAY DEFINITIONS/SETUP =========================
@@ -40,6 +44,10 @@ digitL  DB      0x20, 0x00, 0x00, 0x00, 0x00,  0x00,  0x00,  0x00,  0x00, 0x00
 ;               N       Y       
 yesNoH  DB      0x6C, 0x00
 yesNoL  DB      0x82, 0xB0 
+
+;               +    -
+posOrNegH DB    0x3, 0x3   
+posOrNegL DB    0x50, 0x0
 
 
 ;Names
@@ -337,6 +345,11 @@ performS1ActionForPage6:        ; Number Choosing
         CMP     #0, R7
         JEQ     increaseBinaryDigit
         
+        ; Check if we are in signed mode, and that the current digit is the first one
+        CMP     #1, R6
+        JEQ     checkIfFirstNumber
+        
+increaseDecimalDigit:
         ; Increase Decimal Digit
         INC     inputNumber(R10)                ; Increase digit
         CMP     #0xA, inputNumber(R10)         ; Check if it has reached 10
@@ -345,7 +358,14 @@ performS1ActionForPage6:        ; Number Choosing
         MOV     #0, inputNumber(R10)           ; If so, reset it to 0
 
         JMP     endS1Action
+
+checkIfFirstNumber:
+        ; Check if we are on the first digit. 
+        ; If we are, invert the sign
+        CMP     #0, R10
+        JNE     increaseDecimalDigit
         
+
 increaseBinaryDigit:
         XOR     #1, inputNumber(R10)            ; Invert value
         JMP     endS1Action
@@ -422,12 +442,21 @@ performS2ActionForPage3:        ; Dec --> Bin?
         MOV     #4, R4
         
         CMP     #1, R7
-        JEQ     endS2Action
+        JEQ     configureDecimalInput
         
-        ; Digits was chosen
+        ; Binary was chosen
         INC.b   R4
         JMP     endS2Action
 
+configureDecimalInput:
+        ; We need to increase the number index ONLY if the number is NOT signed
+
+        CMP     #0, R6          ; Check if not signed
+        JNE     endS2Action     ; Do nothing if it's signed
+
+        ; Increase Index because the number is signed
+        INCD    R10
+        JMP     endS2Action
         
 performS2ActionForPage4:        ; Digs?
         ; R4 = 6
@@ -693,10 +722,35 @@ displayNumberInput:
         MOV     #0, R11
         MOV     #0, R12
         
+        ; Check if the number is signed, AND it's decimal mode
+        
+        ; Check if number is decimal input
+        CMP     #1, R7
+        JEQ     displaySignForDigit0
+        
         ; Digit 0
         MOV     inputNumber(R12), R11
         MOV.B   digitH(R11),  &0xA29
-        MOV.B   digitL(R11) , &0xA2A         
+        MOV.B   digitL(R11) , &0xA2A 
+        
+        JMP     displayOtherDigits
+        
+displayNothingForDigit0:
+        ; BUG: Displaying a funny
+        MOV.B   #0x0,  &0xA29           
+        MOV.B   #0x0,  &0xA2A 
+        JMP     displayOtherDigits
+        
+displaySignForDigit0:
+        ; Check if the number is signed
+        CMP     #1, R6
+        JNE     displayNothingForDigit0      ; Skip digit 0 if not signed
+        MOV     inputNumber(R12), R11
+        MOV.B   posOrNegH(R11),  &0xA29
+        MOV.B   posOrNegL(R11) , &0xA2A 
+        
+        
+displayOtherDigits:
         
         ; Digit 1
         INCD    R12
