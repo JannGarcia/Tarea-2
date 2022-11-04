@@ -1,23 +1,21 @@
-#include "msp430.h"                     ; #define controlled include file
+#include "msp430.h"                                                             ; #define controlled include file
 
-        NAME    main                    ; module name
+        NAME    main                                                            ; module name
 
-        PUBLIC  main                    ; make the main label vissible
-                                        ; outside this module
+        PUBLIC  main                                                            ; make the main label vissible
+                                                                                ; outside this module
         ORG     0FFFEh
-        DC16    init                    ; set reset vector to 'init' label
+        DC16    init                                                            ; set reset vector to 'init' label
 
-        ORG     0x1C00                  ; RAM starting location
-                                        ; Always define it when working with arrays
-                                        ; or saving a variable to RAM directly
+        ORG     0x1C00                                                          ; RAM starting location
+                                                                                ; Always define it when working with arrays
+                                                                                ; or saving a variable to RAM directly
 
 ;============================= NOTES ===========================================
 ; * Everything commented with // is debug code.
 ;===============================================================================
 
 ;============================= TODOs ===========================================
-; 1) Render period
-; 2) Render a sign if signed == true (+/-) and decimal == true
 ; 3) Conversion
 ; 4) Handle >= 64 case
 ; 5) Display conversion
@@ -49,22 +47,25 @@ yesNoL  DB      0x82, 0xB0
 posOrNegH DB    0x3, 0x3   
 posOrNegL DB    0x50, 0x0
 
+; Name Indices  -- IN 
+names0  DB      9, 21, 8, 17
+names1  DB      0, 0, 18, 8
+names2  DB      13, 13, 0, 2
+names3  DB      13, 3, 1, 0
+names4  DB      26, 8, 4, 17
+names5  DB      26, 4, 11, 3
 
-;Names
-JANN    db 9,  0, 13, 13, 26, 26
-VANDIE  db 21, 0, 13,  3,  8, 4
-ISABEL  db 8, 18, 0, 1,  4, 11
-RICARD  db 17,  8,  2, 0, 17, 3
 
 
+; User input. MSB -> LSB
 inputNumber DW  0, 0, 0, 0, 0, 0
 
-;
-signQuest db 18, 8, 6, 13, 29           ;Signed Question
-dtbQuest db 3, 27, 28, 1, 29            ;dec to bin question
-digitDis db 3, 6, 19, 18, 29            ;Display DGTS?
-bitsDis db 1, 8, 19, 18, 29             ;Display BITS?
-errorDis db 4, 17, 17, 14, 17, 26       ; Display ERROR
+; Currently Unused
+; signQuest db 18, 8, 6, 13, 29           ;Signed Question
+; dtbQuest db 3, 27, 28, 1, 29            ;dec to bin question
+; digitDis db 3, 6, 19, 18, 29            ;Display DGTS?
+; bitsDis db 1, 8, 19, 18, 29             ;Display BITS?
+; errorDis db 4, 17, 17, 14, 17, 26       ; Display ERROR
 
 
 ;===============================================================================
@@ -120,7 +121,14 @@ mainLoop:
         CALL    #endProgram             ; Never runs, as mainLoop goes on forever
 
 
-;=================================== Clear Input Number Subroutine =============
+;===========================Clear Input Number Subroutine =================
+; Author: Jann C. Garcia
+; Date: November 3, 2022
+; Description: Resets inputNumber to 0
+; Pre-Conditions: None
+; Post-Conditions: inputNumber is reset to 0
+; Side Effects: None
+
 clearInputNumber:
         PUSH.b    R4                      ; Store R4
         MOV     #0, R4
@@ -136,7 +144,13 @@ clearLoop:
 ;===============================================================================
 
 ;================================== RESET SUBROUTINE ===========================
-; Perform "Housekeeping" -- where we set every register/value to a default val
+; Author: Jann C. Garcia
+; Date: October 31, 2022
+; Description: Perform "Housekeeping" -- where we set every register/value to a default value
+; Pre-Conditions: None
+; Post-Conditions: R4 ->R10 are cleared, inputNumber is cleared
+; Side Effects: None
+
 reset:
         MOV     #0, R4                  ; R4 = Current Page/State
                                         ;       0 = Title       <-- start
@@ -169,9 +183,17 @@ reset:
     
         CALL    #clearInputNumber
 
-        RET
+        RET                              ; Jump back to "main"
         
-;================================== RESET SUBROUTINE END =======================
+;==========================================================================
+
+;================================== START PROGRAM SUBROUTINE ==============
+; Author: Jann C. Garcia
+; Date: October 31, 2022
+; Description: Loops the program until a final state is reached.
+; Pre-Conditions: None
+; Post-Conditions: None
+; Side Effects: None
         
 startProgram:
         
@@ -179,15 +201,23 @@ startProgram:
         CALL    #displayCurrentPage
         
         
-        ; Temporary check to determine if we need to continue looping
-        ; see TODO's #4
+        ; Check to determine if we need to continue looping
         CMP     #9, R4
         JL      startProgram
         
         RET                             ; Jump back to "main"
 
 
-;=========================== CHECK BUTTON SUBROUTINE ===========================
+;==========================================================================
+
+;=========================== CHECK BUTTON SUBROUTINE ======================
+; Author: Jann C. Garcia
+; Date: October 31, 2022
+; Description: Verifies S1 or S2 was pressed and calls appropiate subroutines to take action.
+; Pre-Conditions: None
+; Post-Conditions: None
+; Side Effects: None
+
 checkButtonInput:
         ; Check if S1 was pressed
         ; If S1 was pressed, do an action based on the current page
@@ -245,27 +275,26 @@ jumpToPerformActionForS2:
         CALL    #performActionForS2
         
 endButtonCheck:
-//        // DEBUG: Turn LEDs OFF
-//        CMP.b   #0x6, R9
-//        JEQ     turnOffLEDs
-//        RET                             ; Return back to "startProgram"
-
-//turnOffLEDs:
-//        BIC.b   #BIT0, &P1OUT
-//        BIC.b   #0x80, &P9OUT
         RET                             ; Return back to "startProgram"
         
-;=========================== CHECK BUTTON SUBROUTINE END========================
+;===============================================================================
 
 
 ;=============================== S1 BUTTON ACTION ==============================
+; Author: Jann C. Garcia
+; Date: October 31, 2022
+; Description: Handles actions for when S1 is pressed
+; Pre-Conditions: None
+; Post-Conditions: None
+; Side Effects: None
 
 performActionForS1:
         // DEBUG: Turn P1.0 ON and P9.7 OFF
         BIS.b   #BIT0, &P1OUT
         BIC.b   #0x80, &P9OUT
-;        CALL    #delay                  // Show the LED
         
+        ; We need to check what page we are on!
+        ; Depending on the page, we need to perform different actions:
         CMP     #0, R4
         JEQ     performS1ActionForPage0 ; Title Page
         
@@ -292,18 +321,16 @@ performActionForS1:
         
         CMP     #8, R4
         JEQ     performS1ActionForPage8 ; Conversion State
-        
-; We need to check what page we are on!
-; Depending on the page, we need to perform different actions:
+       
         
 performS1ActionForPage0:        ; Title
-        ; R4 = 1
+        ; Move to Name Loop
         MOV     #1, R4
         JMP     endS1Action
         
         
 performS1ActionForPage1:        ; Name Loop
-        ; R5++ % 4
+        ; Increase Name Index, resetting to 0 if needed
         INC     R5
         CMP     #4, R5
         JL      endS1Action
@@ -313,24 +340,24 @@ performS1ActionForPage1:        ; Name Loop
 
 
 performS1ActionForPage2:        ; Signed or Unsigned?
-        ; Toggle R6
+        ; Toggle signed boolean
         XOR     #BIT0, R6
         JMP     endS1Action
 
         
 performS1ActionForPage3:        ; Dec --> Bin?
-        ; Toggle R7
+        ; Toggle decToBin boolean
         XOR     #BIT0, R7
         JMP     endS1Action
         
 performS1ActionForPage4:        ; Digits?
-        ; Toggle R8
+        ; Toggle digits value
         XOR     #BIT0, R8
         JMP     endS1Action
 
         
 performS1ActionForPage5:        ; Bits?
-        ; R8++ % 7
+        ; Increase bits count, resetting to 0 if needed
         INC     R8
         CMP     #7, R8
         JL      endS1Action
@@ -340,10 +367,9 @@ performS1ActionForPage5:        ; Bits?
 
         
 performS1ActionForPage6:        ; Number Choosing
-
         ; Check if we are in binary mode
         CMP     #0, R7
-        JEQ     increaseBinaryDigit
+        JEQ     toggleDigitAtR10
         
         ; Check if we are in signed mode, and that the current digit is the first one
         CMP     #1, R6
@@ -366,31 +392,39 @@ checkIfFirstNumber:
         JNE     increaseDecimalDigit
         
 
-increaseBinaryDigit:
+toggleDigitAtR10:
         XOR     #1, inputNumber(R10)            ; Invert value
         JMP     endS1Action
 
-performS1ActionForPage7:        ; Error
+performS1ActionForPage7:                ; Error
         ; R4 = 6
-        MOV     #6, R4
+        CALL    #performS2ActionForPage7        ; Same action as S2
         JMP     endS1Action
         
-performS1ActionForPage8:        ; Conversion State
+performS1ActionForPage8:                ; Conversion State
         ; R4 = 9
-        MOV     #9, R4                  ; This will cause the program to loop "mainLoop"
+        MOV     #9, R4                          ; This will cause the program to loop "mainLoop"
 
 endS1Action:
         RET                             ; Return to "startProgram"
 
-;=============================== S1 BUTTON ACTION END===========================
+;===============================================================================
 
 ;=============================== S2 BUTTON ACTION ==============================
+; Author: Jann C. Garcia
+; Date: October 31, 2022
+; Description: Handles actions for when S2 is pressed
+; Pre-Conditions: None
+; Post-Conditions: None
+; Side Effects: None
 
 performActionForS2:
         // DEBUG: Turn P1.0 OFF and P9.7 ON
         BIC.b   #BIT0, &P1OUT
         BIS.b   #0x80, &P9OUT
-;        CALL    #delay                  // Show the LED
+        
+        ; We need to check what page we are on!
+        ; Depending on the page, we need to perform different actions:
         
         CMP     #0, R4
         JEQ     performS2ActionForPage0
@@ -419,85 +453,85 @@ performActionForS2:
         CMP     #8, R4
         JEQ     performS2ActionForPage8
         
-; We need to check what page we are on!
-; Depending on the page, we need to perform different actions:
                 
-performS2ActionForPage0:        ; Title
-        ; R4 = 2
-        MOV     #2, R4
-        JMP     endS2Action
-        
+performS2ActionForPage0:        ; Title       
 performS2ActionForPage1:        ; Name Loop
-        ; R4 = 2
+        ; Move to Menu Page
         MOV     #2, R4
         JMP     endS2Action
         
 performS2ActionForPage2:        ; Sign?
-        ; R4 = 3
+        ; Move to Dec to Bin Question
         MOV     #3, R4
         JMP     endS2Action
 
 performS2ActionForPage3:        ; Dec --> Bin?
-        ; R4 = 4 if R7 = 1, else R4 = 5
+        ; Prematurely move to Digits Page
         MOV     #4, R4
         
+        ; If Dec --> Bin is true, we need to check if digit 0 needs to be skipped
         CMP     #1, R7
         JEQ     configureDecimalInput
         
-        ; Binary was chosen
+        ; Binary was chosen, don't skip digit 0, and move to Bits Page
+        ; (by increasing R4 by 1)
         INC.b   R4
         JMP     endS2Action
 
 configureDecimalInput:
-        ; We need to increase the number index ONLY if the number is NOT signed
 
-        CMP     #0, R6          ; Check if not signed
-        JNE     endS2Action     ; Do nothing if it's signed
+        CMP     #1, R6                                                          ; Check if signed is true.
+        JEQ     endS2Action                                                     ; Do nothing if it's signed
 
-        ; Increase Index because the number is signed
-        INCD    R10
+        INCD    R10                                                             ; Increase index because number is not signed
         JMP     endS2Action
         
 performS2ActionForPage4:        ; Digs?
-        ; R4 = 6
-        MOV     #6, R4
-        JMP     endS2Action
-
 performS2ActionForPage5:        ; Bits?
-        ; R4 = 6
+
+        ; Move to Number Input Screen
         MOV     #6, R4
         JMP     endS2Action
         
-performS2ActionForPage6:        ; Number Choosing
+performS2ActionForPage6:        ; Number Input Screen
         
-        INCD     R10             ; Increase Index
+        ; Confirm Number. 
+        INCD     R10             ; Increase Index (12 because the array is of WORDS)
         CMP     #12, R10         ; Check if we are still within index range
         JL      endS2Action
         
         
-        ; Move to Conversion
-        ; TODO:
-        ; check if number is greater than 64, or do conversion
+        ; If we reached the final digit, move to Conversion
+
+        ; TODO: check if number is greater than 64 and throw error if true
         MOV     #8, R4
         JMP     endS2Action
         
-performS2ActionForPage7:        ; Error
-        ; R4 = 6
+performS2ActionForPage7:        ; Error -- Unused
+        ; Return back to input screen
+        ; TODO: Reset R10 to the correct starting value to allow the user to input again
         MOV     #6, R4
         JMP     endS2Action
         
 performS2ActionForPage8:        ; Conversion
-        ; R4 = 9
+        ; Move to Reset State
         MOV     #9, R4                  ; This will cause the program to loop "mainLoop"
         
 endS2Action:
-        RET
+        RET                                     
         
 
 ;=============================== S2 BUTTON ACTION END===========================
         
 
 ;=========================== DISPLAY SUBROUTINE ================================
+; Author: Jann C. Garcia, Isabella S. Garrido Blanco
+; Date: October 31, 2022
+; Description: Displays the Current Page
+; Pre-Conditions: R4 must be below 9
+; Post-Conditions: None
+; Side Effects: None
+
 
 displayCurrentPage:
         CMP     #0, R4                  
@@ -527,10 +561,7 @@ displayCurrentPage:
         
         CMP     #8, R4
         JEQ     displayConversion        
-        ; ...
-        
-        ; CMP     #2, R4
-        ; JEQ     displayMenu
+
         
         RET
 
@@ -549,94 +580,41 @@ displayTitleScreen:
 
 
 displayNames:
-        ; IDEA: We might not even need to have all these indexings!
-        ; We can just simply use R5 as the index to the name arrays
-        ; That way all we do is:
-        ;       * Display R5th Name
-        ;       * Return
-        CMP     #0, R5
-        JEQ     displayName1
+  
+        PUSH.b  R12                     ; Store previous R12 value
+        MOV.B   names0(R5), R12         ; Get index for digit 0 for the current name
         
-        CMP     #1, R5
-        JEQ     displayName2        
+        MOV.B   CharH(R12), &0xA29
+        MOV.B   CharL(R12), &0xA2A         
         
-        CMP     #2, R5
-        JEQ     displayName3        
+        MOV.B   names1(R5), R12         ; Get index for digit 1 for the current name
         
-        CMP     #3, R5
-        JEQ     displayName4
+        MOV.B   CharH(R12), &0xA25
+        MOV.B   CharL(R12), &0xA26  
         
+        MOV.B     names2(R5), R12       ; Get index for digit 2 for the current name
         
-displayName1:
-        MOV.B   #0xCF, &0xA29           ;R high byte
-        MOV.B   #0x02, &0xA2A           ;R low byte
-        MOV.B   #0x90, &0xA25           ;I high byte
-        MOV.B   #0x50, &0xA26           ;I low byte
-        MOV.B   #0x9C, &0xA23           ;C high byte
-        MOV.B   #0x00, &0xA24           ;C low byte
-        MOV.B   #0xEF, &0xA32           ;A high byte
-        MOV.B   #0x00, &0xA33           ;A low byte
-        MOV.B   #0xCF, &0xA2E           ;R high byte
-        MOV.B   #0x02, &0xA2F           ;R low byte
-        MOV.B   #0xF0, &0xA27           ;D high byte
-        MOV.B   #0x50, &0xA28           ;D low byte
-;        MOV.W #RICARD, R10
-        RET                             ; Return back to "startProgram"
+        MOV.B   CharH(R12), &0xA23
+        MOV.B   CharL(R12), &0xA24  
         
-displayName2:
-        MOV.B #0x78 , &0xA29            ;J high byte
-        MOV.B #0x00 , &0xA2A            ;J low byte
-        MOV.B #0xEF , &0xA25            ;A high byte
-        MOV.B #0x00 , &0xA26            ;A low byte
-        MOV.B #0x6C , &0xA23            ;N high byte
-        MOV.B #0x82 , &0xA24            ;N low byte
-        MOV.B #0x6C , &0xA32            ;N high byte
-        MOV.B #0x82 , &0xA33            ;N low byte
-        MOV.B #0x00 , &0xA2E            ;empty
-        MOV.B #0x00 , &0xA2F            ;empty
-        MOV.B #0x00 , &0xA27            ;empty
-        MOV.B #0x00 , &0xA28            ;empty
-        ;MOV.W #JANN, R10
-        RET                             ; Return back to "startProgram"
+        MOV.B     names3(R5), R12       ; Get index for digit 3 for the current name
+        
+        MOV.B   CharH(R12), &0xA32
+        MOV.B   CharL(R12), &0xA33  
+        
+        MOV.B     names4(R5), R12       ; Get index for digit 4 for the current name
+        
+        MOV.B   CharH(R12), &0xA2E
+        MOV.B   CharL(R12), &0xA2F  
+        
+        MOV.B     names5(R5), R12       ; Get index for digit 5 for the current name
+        
+        MOV.B   CharH(R12), &0xA27
+        MOV.B   CharL(R12), &0xA28  
+       
+        POP     R12                     ; Restore the original value
+        RET
 
-displayName3:
-        MOV.B   #0x90, &0xA29           ;I high byte
-        MOV.B   #0x50, &0xA2A           ;I low byte
-        MOV.B   #0xB1, &0xA25           ;S high byte
-        MOV.B   #0x80, &0xA26           ;S low byte
-        MOV.B   #0xEF, &0xA23           ;A high byte
-        MOV.B   #0x00, &0xA24           ;A low byte
-        MOV.B   #0xF1, &0xA32           ;B high byte
-        MOV.B   #0x50, &0xA33           ;B low byte
-        MOV.B   #0x9F, &0xA2E           ;E high byte
-        MOV.B   #0x00 , &0xA2F          ;E low byte
-        MOV.B   #0x1C, &0xA27           ;L high byte
-        MOV.B   #0x00 , &0xA28          ;L low byte
-;        MOV.W #ISABEL, R10
-        RET                             ; Return back to "startProgram"
-        
-displayName4:
-        MOV.B   #0x0C, &0xA29           ;V high byte
-        MOV.B   #0x28, &0xA2A           ;V low byte
-        MOV.B   #0xEF, &0xA25           ;A high byte
-        MOV.B   #0x00, &0xA26           ;A low byte
-        MOV.B   #0x6c, &0xA23           ;N high byte
-        MOV.B   #0x82, &0xA24           ;N low byte
-        MOV.B   #0xF0, &0xA32           ;D high byte
-        MOV.B   #0x50, &0xA33           ;D low byte
-        MOV.B   #0x90, &0xA2E           ;I high byte
-        MOV.B   #0x50, &0xA2F           ;I high byte
-        MOV.B   #0x9F, &0xA27           ;E high byte
-        MOV.B   #0x00 , &0xA28          ;E low byte
-;        MOV.W #VANDIE, R10
-        RET                             ; Return back to "startProgram"
-        
-        
-; displayMenu:
-;         RET                             ; Return back to "startProgram"
-
-
-        
         
 displaySignedQuestion:
         MOV.B   #0xB1, &0xA29           ;S high byte
@@ -656,8 +634,7 @@ displaySignedQuestion:
         RET
         
 displayDecToBinQuestion:
-        ; TODO: Check if sign is TRUE.
-        ; If it is, render a negative for the first digit
+
         MOV.B   #0xF0, &0xA29           ;D high byte
         MOV.B   #0x50, &0xA2A           ;D low byte
         MOV.B   #0x03, &0xA25           ;Arrow line high byte
@@ -756,12 +733,16 @@ displayOtherDigits:
         ; Digit 1
         INCD    R12
         MOV     inputNumber(R12), R11
-        MOV.B   digitH(R11),  &0xA25           
+        MOV.B   digitH(R11),  &0xA25 
+        BIC     #11111110B, &0xA26
+
 
         ; Digit 2
         INCD    R12
         MOV     inputNumber(R12), R11
-        MOV.B   digitH(R11),  &0xA23           
+        MOV.B   digitH(R11),  &0xA23   
+        BIC     #11111110B, &0xA24
+
         
         ; Digit 3
         INCD    R12
@@ -821,28 +802,36 @@ displayError:
 displayConversion:
           RET
 
-;=========================== DISPLAY SUBROUTINE ================================
+;===============================================================================
 
 
 ;=========================== DELAY SUBROUTINE ==================================
+; Author: Jann C. Garcia
+; Date: October 31, 2022
+; Description: Delays the program
+; Pre-Conditions: None
+; Post-Conditions: None
+; Side Effects: None
+
+
 delay:  ; Used to delay the program
         ; giving the MSP time to handle
         ; button pressed (debouncing)
 
-        PUSH.w    R7                      ; Preserve Original Value                       
+        PUSH.w    R7                            ; Preserve Original Value                       
         CALL    #delayStart
-        POP     R7                      ; Restore Original Value
+        POP     R7                              ; Restore Original Value
         RET
         
 delayStart:
-        MOV     #0xFFFF,R7              ; Set R7 to an abnormally high value       
+        MOV     #0xFFFF,R7                      ; Set R7 to an abnormally high value       
 
 
 next:   ; Decrease R7 all the way to 0
         DEC     R7                       
         JNZ     next
         RET
-;=========================== DELAY SUBROUTINE ==================================
+;===============================================================================
 
 
 
