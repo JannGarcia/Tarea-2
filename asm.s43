@@ -55,7 +55,8 @@ names3  DB      13, 3, 1, 0
 names4  DB      26, 8, 4, 17
 names5  DB      26, 4, 11, 3
 
-
+; Place Value Array
+wholeNumDecimal DW 0, 1, 1000, 100, 10, 1
 
 ; User input. MSB -> LSB
 inputNumber DW  0, 0, 0, 0, 0, 0
@@ -178,6 +179,10 @@ reset:
         MOV     #0, R9                  ; R9 = P1 Value (S1 = Bit 1, S2 = Bit 2)
 
         MOV     #0, R10                 ; R10 = InputNumber Index
+
+        MOV     #0, R11                 ; R11 = User Input Fractional Part
+
+        MOV     #0, R12                 ; R12 = User Input Whole Part
 
         MOV     #2, &LCDCMEMCTL         ; clear LCD memory (resets screen)
     
@@ -480,10 +485,10 @@ performS2ActionForPage3:        ; Dec --> Bin?
 
 configureDecimalInput:
 
-        CMP     #1, R6                                                          ; Check if signed is true.
-        JEQ     endS2Action                                                     ; Do nothing if it's signed
+        CMP     #1, R6          ; Check if signed is true.
+        JEQ     endS2Action     ; Do nothing if it's signed
 
-        INCD    R10                                                             ; Increase index because number is not signed
+        INCD    R10             ; Increase index because number is not signed
         JMP     endS2Action
         
 performS2ActionForPage4:        ; Digs?
@@ -503,8 +508,15 @@ performS2ActionForPage6:        ; Number Input Screen
         
         ; If we reached the final digit, move to Conversion
 
-        ; TODO: check if number is greater than 64 and throw error if true
+        ; TODO: read the Binary input
+        CALL    #readUserInput
         MOV     #8, R4
+        CMP     #0x40, R12
+        ;JGE     errorPage
+        JMP     endS2Action
+
+errorPage:
+        MOV     #7, R4
         JMP     endS2Action
         
 performS2ActionForPage7:        ; Error -- Unused
@@ -522,7 +534,149 @@ endS2Action:
         
 
 ;=============================== S2 BUTTON ACTION END===========================
+
+;=========================== READ USER INPUT ================================
+; Author: Jann C. Garcia, Isabella S. Garrido Blanco
+; Date: November 4, 2022
+; Description: Read the user input and store the value in Registers 11 and 12
+;       For Decimal:  Register 11 contains the fractional part of input
+;                     Register 12 contains the whole number part of input
+; Pre-Conditions: None
+; Post-Conditions: None
+; Side Effects: None
+
+
+readUserInput:
+        CMP     #1, R7 ; Check if user has entered a decimal number
+        JEQ     checkWholeDigitAmount ; User has entered a decimal number
+        ;TODO: call read binary
+
+; The wholeNumDecimal array will take into consideration the place value of
+; each number for the two possible cases we have when a user inputs a 
+; decimal number.These are the numbers the user input will be multiplied by.
+; Case 1: Sii.ddd 
+;               wholeNumDecimal = [0, 10, 1, 100, 10, 1]
+; Case 2: Si.dddd
+;               wholeNumDecimal = [0, 1, 1000, 100, 10, 1]
+;
+; For example: inputNumber = [0, 2, 3, 4, 5, 6], 1 whole digit
+; Then: [0*0, 2*1, 3*1000, 4*100, 5*10, 6*1]
+
+checkWholeDigitAmount:
+        CMP     #1, R8
+        JEQ     modifyMultiplicationArray ; User picked two whole digits
+        PUSH.B  R13
+        MOV     #0, R13
+        MOV     #0, wholeNumDecimal(R13)
+        INCD    R13
+        MOV     #1, wholeNumDecimal(R13)
+        INCD    R13
+        MOV     #1000, wholeNumDecimal(R13)
+        INCD    R13
+        MOV     #100, wholeNumDecimal(R13)
+        INCD    R13
+        MOV     #10, wholeNumDecimal(R13)
+        INCD    R13
+        MOV     #1, wholeNumDecimal(R13)
+        POP.B   R13
+        JMP     readDecimalInput
+
+; Modify the multiplication array for 2 whole digits
+modifyMultiplicationArray:
+        PUSH.B  R13
+        MOV     #0, R13
+        MOV     #0, wholeNumDecimal(R13)
+        INCD    R13
+        MOV     #10, wholeNumDecimal(R13)
+        INCD    R13
+        MOV     #1, wholeNumDecimal(R13)
+        INCD    R13
+        MOV     #100, wholeNumDecimal(R13)
+        INCD    R13
+        MOV     #10, wholeNumDecimal(R13)
+        INCD    R13
+        MOV     #1, wholeNumDecimal(R13)
+        INCD    R13
+        POP.B   R13
         
+readDecimalInput:
+        CALL    #readWholeNumbers
+        MOV     R11, R12 ; store the Whole Number Portion of input in R11
+        ; Reset R11 to prepare for storing the fractional portion of input
+        MOV     #0, R11 
+        CALL    #readFractionalNumbers
+        RET
+
+readWholeNumbers:
+        ; R8 holds how many whole digits the user has picked
+        ; If R8 holds a 0, user has picked 1 whole digit
+        ; If R8 holds a 1, user has picked 2 whole digits
+        PUSH.B  R8 
+        INC     R8 
+        PUSH.B  R4
+        ; R4 will now hold the index we would like to access in each array.
+        ; Start counting at index 2 of both the user input array and the 
+        ; wholeNumDecimal array. 
+        ; These indexes hold the two numbers that will be multiplied.
+        MOV     #2, R4 
+        JMP     readLoop
+
+readFractionalNumbers:
+        PUSH.B  R8 
+        PUSH.B  R4 
+        PUSH.B  R7  
+        ; R8 contains how many whole digits the user has picked
+        ; 5 - wholeDigits will give us how many fractional digits
+        ; we will need to read.
+        INC     R8 ; since 0 = 1 whole digit, and 1 = 2 whole digits   
+        MOV     R8, R7
+        MOV     #5, R8
+        ; 5 - wholeDigits will give us how many fractional digits
+        ; we will need to read.
+        SUB     R7, R8
+        MOV     R7, R4
+        POP.B   R7
+        ; Two Cases: 3 or 4 fractional digits
+        ; If we need to read 3 fractional digits, set the index to the third
+        ; character placement on the LCD display. Else, we set it to the second
+        ; placement.
+        CMP     #3, R8
+        JEQ     setIndexTo6
+        MOV     #4, R4
+        JMP     readLoop
+        
+setIndexTo6:
+        MOV     #6, R4
+        JMP     readLoop
+        
+; moveRight will help move us to the number in the next index of the array.
+moveRight:
+        INCD R4
+        DEC R8
+        
+readLoop: 
+        ; If we have read all the fractional digits, endAction
+        cmp #0, R8
+        JEQ endAction
+        ; If the user input is 0, skip the multiplication process
+        cmp #0, inputNumber(R4)
+        JEQ  moveRight
+        add wholeNumDecimal(R4), R11 ; Else, add the larger number.
+
+        ; The user input, n, will tell us how many times to add the larger
+        ; number. After adding the larger number, decrease the number (n-1) 
+        ; the user entered, so as to only add the larger number 
+        ; n-1 more times.
+        dec inputNumber(R4)
+        cmp #0, inputNumber(R4)
+        JEQ  moveRight
+        JMP readLoop
+
+endAction:
+        ; Cleanup temporary registers
+        POP.B R4
+        POP.B R8
+        RET
 
 ;=========================== DISPLAY SUBROUTINE ================================
 ; Author: Jann C. Garcia, Isabella S. Garrido Blanco
