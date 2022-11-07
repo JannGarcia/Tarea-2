@@ -175,6 +175,7 @@ reset:
         MOV     #1, R6                  ; R6 = Signed/Unsigned boolean (1 = Y, 0 = N)
         MOV     #1, R7                  ; R7 = Dec -> Bin boolean / delay register (1 = Y, 0 = N)
         MOV     #0, R8                  ; R8 = # of integer bits [0-6 binary, 1-2 decimal]
+                                        ; For decimal: 0 = 1 digit, 1 = 2 digits
 
         MOV     #0, R9                  ; R9 = P1 Value (S1 = Bit 1, S2 = Bit 2)
 
@@ -416,7 +417,7 @@ endS1Action:
 ;===============================================================================
 
 ;=============================== S2 BUTTON ACTION ==============================
-; Author: Jann C. Garcia
+; Author: Jann C. Garcia, Isabella S. Garrido Blanco
 ; Date: October 31, 2022
 ; Description: Handles actions for when S2 is pressed
 ; Pre-Conditions: None
@@ -512,22 +513,30 @@ performS2ActionForPage6:        ; Number Input Screen
         CALL    #readUserInput
         MOV     #8, R4
         CMP     #0x40, R12
-        ;JGE     errorPage
+        JGE     redirectToErrorPage
         JMP     endS2Action
 
-errorPage:
+redirectToErrorPage:
         MOV     #7, R4
+        ; Check if input is signed or unsigned to allow user to input
+        ; their value again starting at the correct index in the display.
+        CMP     #0, R6  ; Check if input is signed
+        JEQ     setCorrectIndex ; Input is not signed, begin at index 2
+        MOV     #0, R10
+        JMP     endS2Action
+
+setCorrectIndex:
+        MOV     #2, R10
         JMP     endS2Action
         
-performS2ActionForPage7:        ; Error -- Unused
+performS2ActionForPage7:        ; Error
         ; Return back to input screen
-        ; TODO: Reset R10 to the correct starting value to allow the user to input again
         MOV     #6, R4
         JMP     endS2Action
         
 performS2ActionForPage8:        ; Conversion
         ; Move to Reset State
-        MOV     #9, R4                  ; This will cause the program to loop "mainLoop"
+        MOV     #9, R4          ; This will cause the program to loop "mainLoop"
         
 endS2Action:
         RET                                     
@@ -542,7 +551,9 @@ endS2Action:
 ;       For Decimal:  Register 11 contains the fractional part of input
 ;                     Register 12 contains the whole number part of input
 ; Pre-Conditions: None
-; Post-Conditions: None
+; Post-Conditions: R11 will contain the value of the fractional portion
+; of the number the user has entered. R12 will contain the value of the whole 
+; part the use rhas entered.
 ; Side Effects: None
 
 
