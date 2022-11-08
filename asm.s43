@@ -691,10 +691,10 @@ endAction:
 ;=========================== MULTIPLICATION ==================================
 ; Author: Ricardo Garcia
 ; Date: November 7, 2022
-; Description: 
-; Pre-Conditions: None
-; Post-Conditions: None
-; Side Effects: 
+; Description: Multiplies R10, and R11
+; Pre-Conditions: R13 must be 0
+; Post-Conditions: R10 and R11 are set to 0
+; Side Effects: Clears R10 and R11
 
  multUnsignedLoop:                      ; R10 = Operand 1 & R11 = Operand 2 & R12 = RESULT & R13 = loop count
         INC.b    R13
@@ -713,10 +713,10 @@ endAction:
  ;=========================== DIVISION ==================================
 ; Author: Ricardo Garcia
 ; Date: November 7, 2022
-; Description: 
+; Description: Divides R10/R11
 ; Pre-Conditions: None
 ; Post-Conditions: None
-; Side Effects: 
+; Side Effects: None
  divUnsignedLoop:                        ; R10 = Operand 1 & R11  = Operand 2 & R12 = RESULT & R13 = REMAINDER i.e R10/R11 = R12 WITH R13 REMAINDER
         INC.b    R12
         SUB.b    R11,R10
