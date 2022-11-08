@@ -691,7 +691,47 @@ endAction:
         POP.B R4
         POP.B R8
         RET
+;=========================== CONVERSION SUBROUTINE ==================================
+; Author: Ricardo Garcia
+; Date: November 7, 2022
+; Description: Converts the number B->D and D->B
+; Pre-Conditions: None
+; Post-Conditions: None
+; Side Effects: None
 
+ multUnsigned:                      ; R10 = Operand 1 & R11 = Operand 2 & R12 = RESULT & R13 = loop count
+        CLR     R12                     ;Clear result register
+        INC.b    R13
+        ADD.b    R10, R12
+        CMP.b    R13, R11
+        JNE      multUnsigned
+        CLR.b    R13
+        CLR.b    R10
+        CLR.b    R11
+        
+        RET  
+        
+ divUnsigned:                        ; R10 = Operand 1 & R11  = Operand 2 & R12 = RESULT & R13 = REMAINDER i.e R10/R11 = R12 WITH R13 REMAINDER
+        CLR    R12                      ; Clear result register
+        CLR    R13                      ; Clear remainder
+        INC.b    R12
+        SUB.b    R11,R10
+        CMP.b    R11, R10
+        JGE    divUnsigned               ;Loops if higher or equal
+        MOV.b    R10, R13                ;Stores remainder in R13
+        CLR.b    R10
+        CLR.b    R11
+        
+        RET 
+ 
+ decimalToBinary:
+        RET
+ 
+ binaryToDecimalWhole:
+        RET
+        
+ binaryToDecimalFractional:
+        RET
 ;=========================== DISPLAY SUBROUTINE ================================
 ; Author: Jann C. Garcia, Isabella S. Garrido Blanco
 ; Date: October 31, 2022

@@ -45,6 +45,24 @@
         <LiveEnabled>0</LiveEnabled>
         <LiveFile>PowerLogLive.log</LiveFile>
     </PowerLog>
+    <TermIOLog>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+    </TermIOLog>
+    <LogFile>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+        <Category>_ 0</Category>
+    </LogFile>
+    <PowerProbe>
+        <Frequency>10000</Frequency>
+        <Probe0>Current</Probe0>
+        <ProbeSetup0>0 1 1 2 0 0</ProbeSetup0>
+        <Probe1>Voltage</Probe1>
+        <ProbeSetup1>1 1 1 4 0 0</ProbeSetup1>
+        <Probe2>Energy</Probe2>
+        <ProbeSetup2>4 1 1 10 0 0</ProbeSetup2>
+    </PowerProbe>
     <Breakpoints>
         <Count>0</Count>
     </Breakpoints>
@@ -70,26 +88,45 @@
         <all_registers>0</all_registers>
         <File_name />
     </Memory_Dump>
-    <TermIOLog>
-        <LoggingEnabled>_ 0</LoggingEnabled>
-        <LogFile>_ ""</LogFile>
-    </TermIOLog>
-    <LogFile>
-        <LoggingEnabled>_ 0</LoggingEnabled>
-        <LogFile>_ ""</LogFile>
-        <Category>_ 0</Category>
-    </LogFile>
+    <InterruptLog>
+        <LogEnabled>0</LogEnabled>
+        <GraphEnabled>0</GraphEnabled>
+        <ShowTimeLog>1</ShowTimeLog>
+        <SumEnabled>0</SumEnabled>
+        <ShowTimeSum>1</ShowTimeSum>
+        <SumSortOrder>0</SumSortOrder>
+    </InterruptLog>
+    <DataLog>
+        <LogEnabled>0</LogEnabled>
+        <GraphEnabled>0</GraphEnabled>
+        <ShowTimeLog>1</ShowTimeLog>
+        <SumEnabled>0</SumEnabled>
+        <ShowTimeSum>1</ShowTimeSum>
+    </DataLog>
+    <Breakpoints2>
+        <Count>0</Count>
+    </Breakpoints2>
+    <Interrupts>
+        <Enabled>1</Enabled>
+    </Interrupts>
+    <MemoryMap>
+        <Enabled>0</Enabled>
+        <Base>0</Base>
+        <UseAuto>0</UseAuto>
+        <TypeViolation>1</TypeViolation>
+        <UnspecRange>1</UnspecRange>
+        <ActionState>1</ActionState>
+    </MemoryMap>
+    <Trace1>
+        <Enabled>0</Enabled>
+        <ShowSource>1</ShowSource>
+    </Trace1>
     <Aliases>
         <Count>0</Count>
         <SuppressDialog>0</SuppressDialog>
     </Aliases>
-    <PowerProbe>
-        <Frequency>10000</Frequency>
-        <Probe0>Current</Probe0>
-        <ProbeSetup0>0 1 1 2 0 0</ProbeSetup0>
-        <Probe1>Voltage</Probe1>
-        <ProbeSetup1>1 1 1 4 0 0</ProbeSetup1>
-        <Probe2>Energy</Probe2>
-        <ProbeSetup2>4 1 1 10 0 0</ProbeSetup2>
-    </PowerProbe>
+    <Simulator>
+        <Freq>1000000</Freq>
+        <FreqHi>0</FreqHi>
+    </Simulator>
 </settings>
