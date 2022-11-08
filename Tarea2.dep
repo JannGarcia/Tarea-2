@@ -7,19 +7,19 @@
         <outputs>
             <file>$PROJ_DIR$\asm.s43</file>
             <file>$TOOLKIT_DIR$\config\linker\multiplier32.xcl</file>
-            <file>$PROJ_DIR$\Debug\Exe\Tarea2.d43</file>
+            <file>$TOOLKIT_DIR$\inc\msp430.h</file>
             <file>$PROJ_DIR$\Debug\List\Tarea2.map</file>
             <file>$TOOLKIT_DIR$\inc\msp430fr6989.h</file>
-            <file>$TOOLKIT_DIR$\inc\msp430.h</file>
             <file>$PROJ_DIR$\Debug\Obj\asm.r43</file>
             <file>$TOOLKIT_DIR$\config\linker\lnk430fr6989.xcl</file>
+            <file>$PROJ_DIR$\Debug\Exe\Tarea2.d43</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 2 3</file>
+                    <file> 7 3</file>
                 </tool>
             </outputs>
         </file>
@@ -28,13 +28,13 @@
             <outputs>
                 <tool>
                     <name>A430</name>
-                    <file> 6</file>
+                    <file> 5</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>A430</name>
-                    <file> 5 4</file>
+                    <file> 2 4</file>
                 </tool>
             </inputs>
         </file>
@@ -49,7 +49,7 @@
             <inputs>
                 <tool>
                     <name>XLINK</name>
-                    <file> 7 1 6</file>
+                    <file> 6 1 5</file>
                 </tool>
             </inputs>
         </file>
