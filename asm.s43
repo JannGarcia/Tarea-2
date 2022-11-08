@@ -691,39 +691,58 @@ endAction:
         POP.B R4
         POP.B R8
         RET
-;=========================== CONVERSION SUBROUTINE ==================================
+;=========================== MULTIPLICATION ==================================
 ; Author: Ricardo Garcia
 ; Date: November 7, 2022
-; Description: Converts the number B->D and D->B
-; Pre-Conditions: None
-; Post-Conditions: None
-; Side Effects: None
+; Description: Multiplies R10, and R11
+; Pre-Conditions: R13 must be 0
+; Post-Conditions: R10 and R11 are set to 0
+; Side Effects: Clears R10 and R11
 
- multUnsigned:                      ; R10 = Operand 1 & R11 = Operand 2 & R12 = RESULT & R13 = loop count
-        CLR     R12                     ;Clear result register
+ multUnsignedLoop:                      ; R10 = Operand 1 & R11 = Operand 2 & R12 = RESULT & R13 = loop count
         INC.b    R13
         ADD.b    R10, R12
         CMP.b    R13, R11
-        JNE      multUnsigned
+        JNE      multUnsignedLoop
         CLR.b    R13
         CLR.b    R10
         CLR.b    R11
-        
         RET  
         
- divUnsigned:                        ; R10 = Operand 1 & R11  = Operand 2 & R12 = RESULT & R13 = REMAINDER i.e R10/R11 = R12 WITH R13 REMAINDER
-        CLR    R12                      ; Clear result register
-        CLR    R13                      ; Clear remainder
+ callMult:
+        CLR     R12                     ;Clear result register
+        JMP    multUnsignedLoop
+  
+ ;=========================== DIVISION ==================================
+; Author: Ricardo Garcia
+; Date: November 7, 2022
+; Description: Divides R10/R11
+; Pre-Conditions: None
+; Post-Conditions: None
+; Side Effects: None
+ divUnsignedLoop:                        ; R10 = Operand 1 & R11  = Operand 2 & R12 = RESULT & R13 = REMAINDER i.e R10/R11 = R12 WITH R13 REMAINDER
         INC.b    R12
         SUB.b    R11,R10
         CMP.b    R11, R10
-        JGE    divUnsigned               ;Loops if higher or equal
+        JGE    divUnsignedLoop           ;Loops if higher or equal
         MOV.b    R10, R13                ;Stores remainder in R13
         CLR.b    R10
         CLR.b    R11
         
         RET 
- 
+        
+ callDiv:
+        CLR    R12                      ; Clear result register
+        CLR    R13                      ; Clear remainder
+        JMP    divUnsignedLoop            
+       
+ ;=========================== CONVERSION ==================================
+; Author: Ricardo Garcia
+; Date: November 7, 2022
+; Description: 
+; Pre-Conditions: None
+; Post-Conditions: None
+; Side Effects: 
  decimalToBinary:
         RET
  
