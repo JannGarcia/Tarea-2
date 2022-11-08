@@ -1,8 +1,8 @@
 "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.5\430\bin\430proc.dll" 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.5\430\bin\430fet.dll" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.5\430\bin\430sim.dll" 
 
-"D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\Exe\Tarea2.d43" 
+"C:\Users\garci\OneDrive\Documents\Tarea-2\Debug\Exe\Tarea2.d43" 
 
 --plugin="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.5\430\bin\430bat.dll" 
 
