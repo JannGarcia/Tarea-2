@@ -614,6 +614,7 @@ modifyMultiplicationArray:
         POP.B   R13
         
 readDecimalInput:
+        MOV     #0, R11
         CALL    #readWholeNumbers
         MOV     R11, R12 ; store the Whole Number Portion of input in R11
         ; Reset R11 to prepare for storing the fractional portion of input

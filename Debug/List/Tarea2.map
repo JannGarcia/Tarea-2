@@ -2,7 +2,7 @@
 #                                                                              #
 #      IAR Universal Linker V6.6.2.104                                         #
 #                                                                              #
-#           Link time     =  08/Nov/2022  18:16:21                             #
+#           Link time     =  08/Nov/2022  19:13:43                             #
 #           Target CPU    =  MSP430                                            #
 #           List file     =  "D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug\ #
 #                            List\Tarea2.map"                                  #
@@ -11,7 +11,7 @@
 #                            Format: ubrof10                                   #
 #                            UBROF version 10.0.6                              #
 #                            Using library modules for C-SPY (-rt)             #
-#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EWBA38.tmp   #
+#           Command line  =  -f C:\Users\janng\AppData\Local\Temp\EW3DA8.tmp   #
 #                            ("D:\Code Workspaces\IAR Workspaces\Tarea 2\Debug #
 #                            \Obj\asm.r43"                                     #
 #                            -o                                                #
@@ -151,7 +151,7 @@ CSTACK
   Segment part 0. ROOT 
     -------------------------------------------------------------------------
 <CODE> 1 (was CODE)
-  Relative segment, address: 4400 - 49BD (0x5be bytes), align: 1
+  Relative segment, address: 4400 - 49EF (0x5f0 bytes), align: 1
   Segment part 1. ROOT        Intra module refs:   Absolute parts
            ENTRY                   ADDRESS         REF BY
            =====                   =======         ======
@@ -164,13 +164,13 @@ CSTACK
            mainLoop                445A 
            reset                   447C 
            startProgram            4498 
-           endProgram              49BA 
+           endProgram              49EC 
            clearInputNumber        4468 
            clearLoop               446C 
            checkButtonInput        44A8 
-           displayCurrentPage      46DA 
+           displayCurrentPage      470C 
            checkS2                 44CA 
-           delay                   49A8 
+           delay                   49DA 
            jumpToPerformActionForS1
                                    44EC 
            endButtonCheck          44F6 
@@ -227,32 +227,41 @@ CSTACK
            modifyMultiplicationArray
                                    464A 
            readDecimalInput        467A 
-           readWholeNumbers        4688 
-           readFractionalNumbers   4692 
-           readLoop                46BA 
-           setIndexTo6             46B0 
-           moveRight               46B6 
-           endAction               46D4 
-           displayTitleScreen      4708 
-           displayNames            4730 
-           displaySignedQuestion   4796 
+           readWholeNumbers        468A 
+           readFractionalNumbers   4694 
+           readLoop                46BC 
+           setIndexTo6             46B2 
+           moveRight               46B8 
+           endAction               46D6 
+           multUnsignedLoop        46DC 
+           callMult                46EC 
+           divUnsignedLoop         46F0 
+           callDiv                 4700 
+           decimalToBinary         4706 
+           binaryToDecimalWhole    4708 
+           binaryToDecimalFractional
+                                   470A 
+           displayTitleScreen      473A 
+           displayNames            4762 
+           displaySignedQuestion   47C8 
            displayDecToBinQuestion
-                                   47DE 
-           displayDigitsQuestion   4824 
-           displayBitsQuestion     4872 
-           displayNumberInput      48BC 
-           displayError            496A 
-           displayConversion       49A6 
-           decimalConfiguration    48E2 
-           displayOtherDigits      48F6 
+                                   4810 
+           displayDigitsQuestion   4856 
+           displayBitsQuestion     48A4 
+           displayNumberInput      48EE 
+           displayError            499C 
+           displayConversion       49D8 
+           endDisplay              49D8 
+           decimalConfiguration    4914 
+           displayOtherDigits      4928 
            displayNothingForDigit0
-                                   48D8 
-           displaySignedNumber     48E2 
-           endDigitsDisplay        4964 
+                                   490A 
+           displaySignedNumber     4914 
+           endDigitsDisplay        4996 
            displayPointAtAddress26
-                                   495C 
-           delayStart              49B2 
-           next                    49B4 
+                                   498E 
+           delayStart              49E4 
+           next                    49E6 
 
 
 
@@ -267,7 +276,7 @@ CSTACK
 SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
 =======              =====    =============   ===========     ====  ====  =====
 CSTACK                                 2360 - 23FF              A0   rel    1
-<CODE> 1                               4400 - 49BD             5BE   rel    1
+<CODE> 1                               4400 - 49EF             5F0   rel    1
                                        1C00 - 1C89              8A  aseg  
                                        FFFE - FFFF               2  aseg  
 
@@ -277,7 +286,7 @@ CSTACK                                 2360 - 23FF              A0   rel    1
                 *                                      *
                 ****************************************
 
- 1 470 bytes of CODE memory (+ 140 absolute )
+ 1 520 bytes of CODE memory (+ 140 absolute )
    160 bytes of DATA memory
 
 Errors: none
